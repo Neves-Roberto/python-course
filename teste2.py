@@ -1,3 +1,2 @@
-teste de adição
+n = input('Digite um valor:')
 
-novo
