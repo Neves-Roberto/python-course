@@ -1,0 +1,47 @@
+# python-course
+
+--ordem de precedencia
+#()
+#**
+#* / // %
+#+ -
+
+--extendendo a linguagem com modulos
+Fase 8 - modulos
+
+comando import
+importa todas a bibliotecas
+import modulo
+
+ou
+importa somente uma função
+from modulo import funcao
+
+Fase 9 - Manipulando texto / string
+
+-fatiamento frase[0]
+frase[0:10:2]
+
+-Analise
+len(frase)
+frase.count('o') # conta quantos carecteres 'o' contem na frase
+frase.count('o',0,13) contagem com fatiamento
+frase.find('deo') quando começou este trecho
+quando retorna -1 siguinifica que não foi encontrado
+'Curso' in frase utilizando o operador para checar e analisar
+
+-Transformacao
+frase.replace('Python','Android)
+frase.upper() #passa tudo para maiuscula
+frase.lower() #passa tudo para minusucla
+frase.captalize() #Somente o primeiro caracter em maiusculo
+frase.title() #todas as palavra com primeiro caracter em mauiscula
+-remover
+frase.strip() #remove os espaços no inicio e no final
+frase.rstrip() #remove somente os espaços da direita, do final
+frase.lstrip() #remove somente os espaços da esquerda, do inicio
+-Divisão
+frase.split() #onde tiver espaços vai dividir em uma lista
+
+
+

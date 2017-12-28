@@ -6,7 +6,8 @@ aluno1 = input('Digite o nome do primeiro aluno: ')
 aluno2 = input('Digite o nome do segundo aluno: ')
 aluno3 = input('Digite o nome do terceiro aluno: ')
 aluno4 = input('Digite o nome do quarto aluno: ')
-sorteio = random.randint(1, 4)
-print('aluno sorteado numero {}, parabens {}'.format(sorteio, aluno[sorteio]))
+lista_alunos = [aluno1, aluno2, aluno3, aluno4]
+#uso de listas
+sorteio = random.choice(lista_alunos)
 
-#falta o uso de variavel que utilize indice para localizar o objeto desejado
+print('aluno sorteado numero {}, parabens '.format(sorteio))
