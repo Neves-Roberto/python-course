@@ -34,3 +34,5 @@ c = 0
 
 delta = ((b ** 2) - (4 * a * c))
 
+print(delta)
+
