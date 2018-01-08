@@ -55,4 +55,3 @@ elif (delta > 0):
 else:
     x1 = ((b * (-1)) + sqrt(delta)) / (2 * a)
     print('a raiz desta equação é {}'.format(x1))
-
