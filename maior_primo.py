@@ -32,3 +32,4 @@ def test_maior_primo100():
     
 def test_maior_primo7():
     assert maior_primo(7) == 7
+    
