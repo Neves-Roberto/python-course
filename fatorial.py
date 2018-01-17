@@ -8,12 +8,35 @@ Exemplo:
 Digite o valor de n: 5
 120
 '''
-numero = int(input('Digite o valor de n: '))
-if numero != 0:
-    fatorial = numero
-    while numero != 1:
-        fatorial = fatorial * (numero -1)
-        numero = numero -1
-else:
-    fatorial = 1
-print(fatorial)
+def fatorial(k):
+    '''(int) -> int
+
+    Recebe um inteiro k e retorna o valor de k!
+
+    Pre-condicao: supoe que k eh um numero inteiro nao negativo.
+    '''
+
+    k_fat = 1
+    cont = 1
+    while cont < k:
+        cont += 1       # o mesmo que cont = cont + 1
+        k_fat *= cont   # o mesmo que k_fat = k_fat * cont
+
+    return k_fat
+
+
+#numero = int(input('Digite o valor de n: '))
+
+#print(fatorial(numero))
+
+def test_fatorial0():
+    assert fatorial(0) == 1
+
+def test_fatorial1():
+    assert fatorial(1) == 1
+    
+def test_fatorial2():
+    assert fatorial(2) == 2
+    
+def test_fatorial5():
+    assert fatorial(5) == 120

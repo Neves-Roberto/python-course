@@ -1,5 +1,6 @@
-texto = "computação"
-if len(texto) > 10:
-    print("texto com mais de 10 caracteres")
-else:
-    print("texto com 10 ou menos caracteres")
+# content of test_sample.py
+def func(x):
+    return x + 1
+
+def test_answer():
+    assert func(4) == 5
