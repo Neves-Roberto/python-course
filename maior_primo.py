@@ -18,11 +18,34 @@ encontrado.
 
 '''
 def ePrimo(k):
-    pass
+    primalidade = True
+    i = 2
+    if k == 1 or k == 2 or k == 3:
+        primalidade = True
+    else:
+        while i != k and primalidade:
+            if k % i == 0:
+                primalidade = False
+            else:
+                primalidade = True
+            i = i + 1
+    
+    if primalidade:
+        return True
+    else:
+        return False
+    
 
 def maior_primo(x):
-    pass
-
+    if x < 2:
+        return 1
+    else:
+        i = 2
+        while i <= x:
+            if ePrimo(i):
+                primo = i
+            i += 1
+        return primo
 
 
 #etapa de testes
@@ -32,4 +55,3 @@ def test_maior_primo100():
     
 def test_maior_primo7():
     assert maior_primo(7) == 7
-    
