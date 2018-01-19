@@ -135,4 +135,11 @@ def partida():
         print('Computador inicia a partida')
         print(computador_escolhe_jogada(n, m))
 
+TODO
+CRIAR CHAVE LIGA DESLIGA PARA JOGADA, SENDO QUE INICIA COM ELA DESLIGADA E QUANDO FOR A JOGADA LIGAR A CHAVE COM 'NOT'
+
+    while n != 0:
+        pass
+
+
 partida()
