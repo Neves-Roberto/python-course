@@ -128,18 +128,23 @@ def usuario_escolhe_jogada(n, m):
 def partida():
     n = int(input('Digite o numero de peças no tabuleiro: '))
     m = int(input('Digite o numero maximo de peças por jogada: '))
-    if n % (m+1) == 0:
+    jogada = True
+    if n % (m+1) == 0:# define quem inicia a partida
         print('Jogador inicia a partida')
         usuario_escolhe_jogada(n, m)
     else:
         print('Computador inicia a partida')
         print(computador_escolhe_jogada(n, m))
-
-TODO
-CRIAR CHAVE LIGA DESLIGA PARA JOGADA, SENDO QUE INICIA COM ELA DESLIGADA E QUANDO FOR A JOGADA LIGAR A CHAVE COM 'NOT'
+        jogada = False
 
     while n != 0:
-        pass
+        if jogada:
+            n -= usuario_escolhe_jogada(n, m)
+            jogada = not jogada
+            
+        else:
 
-
+            n -= computador_escolhe_jogada(n, m)
+            jogada = not jogada
+            
 partida()
