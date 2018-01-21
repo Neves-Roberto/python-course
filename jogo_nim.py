@@ -1,4 +1,3 @@
-
 def computador_escolhe_jogada(n, m):
     resto = n % (m + 1)
     if (resto < m):
@@ -28,6 +27,7 @@ def campeonato():
             usuario += 1
         else:
             computador += 1
+
         numero_partidas += 1
     
     print('*** Final do campeonato ***')
