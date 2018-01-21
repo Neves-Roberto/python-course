@@ -1,6 +1,10 @@
-# content of test_sample.py
-def func(x):
-    return x + 1
+def desenha(linha):    
+    while linha > 0:
+        coluna = 1
+        while coluna <= linha:
+            print('*', end = "")
+            coluna = coluna + 1
+        print()
+        linha = linha - 1
 
-def test_answer():
-    assert func(4) == 5
+desenha(5)
