@@ -7,5 +7,27 @@ e n (incluindo 2 e, se for o caso, n).
 '''
 
 def n_primos(n):
-    pass
+    soma_primos = 0
+    cont = 2
+    while cont <= n:
+        if é_primo(cont):
+            soma_primos += 1
+        cont += 1
+    return soma_primos
 
+def é_primo(n):
+    #TODO implementar verificação de erro quando digitado 1, zero ou negativo
+    i = 2
+    primalidade = True
+    while i != n and primalidade:
+        if n % i == 0:
+            primalidade = False
+        i = i + 1
+    return primalidade
+    
+def main():
+    n = int(input('Digite um interiro maior que 2: '))
+    print(n_primos(n))
+    
+
+main()
