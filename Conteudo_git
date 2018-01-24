@@ -17,19 +17,20 @@ git config --list
 mkdir pasta
 cd pasta
 
-#Inicializa o repositorio
+#Inicializa o repositorio, estando dentro da pasta que sera o repositorio
 
-git init   
+git init
 
 #reportar como esta o meu repositorio neste momento
 
 git status 
 #Adiciona arquivo
 git add arquivo
+git add -A # adiciona todos os arquivo e prepara para o commit
 #--- momento do staged
 # editando arquivo
 
-#visualizando logs
+#visualizando logs, varias maneiras de visualizar o andamento do projeto
 
 git log
 git log --decorate
@@ -39,7 +40,7 @@ git log --graph
 git show hash
 
 
-# sempre utilizar git diff para saber o que aconteceu
+# sempre utilizar git diff para saber o que aconteceu, compara diferenças entre os arquivos
 git diff
 
 git diff --name-only 
@@ -59,7 +60,7 @@ git checkout nome_do_arquivo
 git reset HEAD Readme.md
 #tira da fila do staged
 
-git commit -am "mensagem" #todos os arquivos e mensagem
+git commit -am "mensagem" #todos os arquivos e mensagem, commita os arquivos para o repositorio, e fica pronto para o push
 
 git reset --soft #(volta as modificacoes e deixa pronto pro commit)
 git reset --mixed #(volta para antes do staged)
@@ -80,10 +81,12 @@ git remote
 
 git remote -v 
 mostra mais informações, neste caso os endereços onde esta armazenado
+# git push, publica as modificacoes que estavam prontas do commit
+git push -u origin master 
 
-git push -u origin master
+# -u traquer para nao precisar digitar tudo novamente
+# apos este uso do -u o proximo fica somente (git push)
 
--u traquer para nao precisar digitar tudo novamente
 
 origin repositorio remoto 
 master branch atual que estou utilizando
