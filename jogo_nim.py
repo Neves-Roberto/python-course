@@ -6,7 +6,7 @@ def computador_escolhe_jogada(n, m):
         return m
     
 def usuario_escolhe_jogada(n, m):
-    jogada = int(input('Quantas peças você vai tirar? '))
+    jogada = int(input('Quantas pecas voce vai tirar? '))
     escolhe = True
     while escolhe:
         if (jogada <= m and jogada > 0):
@@ -14,8 +14,8 @@ def usuario_escolhe_jogada(n, m):
             return jogada
         else:
             print('Oops! Jogada invalida! Tente de novo. \n')
-            jogada = int(input('Quantas peças você vai tirar? '))
-
+            jogada = int(input('Quantas pecas voce vai tirar? '))
+#TODO CHECAR O CODIGO E TESTAR
 def campeonato():
     numero_partidas = 1
     usuario = 0
@@ -47,36 +47,36 @@ def main():
     
 
 def partida():
-    n = int(input('Quantas peças? '))
-    m = int(input('Limite de peças por jogada? '))
+    n = int(input('Quantas pecas? '))
+    m = int(input('Limite de pecas por jogada? '))
     jogada = True
     if n % (m+1) == 0:# define quem inicia a partida
-        print('\nVoce começa!')
+        print('\nVoce comeca!')
         jogada_usuario = usuario_escolhe_jogada(n, m)
         n -= jogada_usuario
-        print('Voce tirou {} peça'.format(jogada_usuario))
-        print('Agora resta no tabuleiro {} peça(s)\n'.format(n))
+        print('Voce tirou {} peca'.format(jogada_usuario))
+        print('Agora resta no tabuleiro {} peca(s)\n'.format(n))
         jogada = False
     else:
-        print('\nComputador começa!')
+        print('\nComputador comeca!')
         jogada_computador = computador_escolhe_jogada(n, m)
         n -= jogada_computador
-        print('O computador tirou {} peça'.format(jogada_computador))
-        print('Agora resta no tabuleiro {} peça(s)\n'.format(n))
+        print('O computador tirou {} peca'.format(jogada_computador))
+        print('Agora resta no tabuleiro {} peca(s)\n'.format(n))
     
     while n != 0:
         if jogada:
             jogada_usuario = usuario_escolhe_jogada(n, m)
             n -= jogada_usuario
-            print('Voce tirou {} peça'.format(jogada_usuario))
-            print('Agora resta no tabuleiro {} peça(s)\n'.format(n))
+            print('Voce tirou {} peca'.format(jogada_usuario))
+            print('Agora resta no tabuleiro {} peca(s)\n'.format(n))
             jogada = not jogada
         
         else:
             jogada_computador = computador_escolhe_jogada(n, m)
             n -= jogada_computador
-            print('O computador tirou {} peça'.format(jogada_computador))
-            print('Agora resta no tabuleiro {} peça(s)\n'.format(n))
+            print('O computador tirou {} peca'.format(jogada_computador))
+            print('Agora resta no tabuleiro {} peca(s)\n'.format(n))
             jogada = not jogada
     
     if not jogada:
@@ -85,5 +85,9 @@ def partida():
     else:
         print('Fim de jogo! O Computador ganhou!')
         return False
-    
+      
+def test():
+  print('ola')
+  
+      
 main()
