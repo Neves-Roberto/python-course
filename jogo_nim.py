@@ -28,6 +28,7 @@ def campeonato():
         else:
             computador += 1
 
+
         numero_partidas += 1
     
     print('*** Final do campeonato ***')

@@ -8,26 +8,50 @@ A lista devolvida deve estar ordenada.
 
 Dica: Você pode usar lista.sort() ou sorted(lista). Qual a diferença?
 '''
+
+
 def remove_repetidos(lista):
-	quantidade_lista = len(lista)
-	posicao_1 = 0
-	posicao_2 = 1
-	
-	while posicao_1 != quantidade_lista:
-		if lista[posicao_1] == lista[posicao_2]:
-			del(lista[posicao_2])
-			quantidade_lista = len(lista)
-		else:
-			posicao_2 +=1
-	posicao_1 += 1
-	
-	print(lista)
-	print(lista.sort())
-	print(sorted(lista))
-	#return lista
-	
-lista = [0, 1, 2, 1, 2, 1]
+    quantidade_lista = len(lista)
+    ponteiro_1 = 0
+    ponteiro_2 = 1
+    valor_posicao_1 = lista[ponteiro_1]
+    valor_posicao_2 = lista[ponteiro_2]
+    limite_p1 = len(lista) - 2
+    limite_p2 = len(lista) - 1
 
-remove_repetidos(lista)
+    while ponteiro_1 != limite_p1:
+        if valor_posicao_1 == valor_posicao_2:# and ponteiro_2 != quantidade_lista:
+            del (lista[ponteiro_2])
+            quantidade_lista = len(lista)#atualiza a quantidade da lista
+            limite_p1 = len(lista) - 2
+            limite_p2 = len(lista) - 1
+            valor_posicao_1 = lista[ponteiro_1]
+            valor_posicao_2 = lista[ponteiro_2]
+            #if ponteiro_2 != quantidade_lista:
+            #    valor_posicao_2 = lista[ponteiro_2]
 
-  
+        else:
+            ponteiro_2 += 1
+            if ponteiro_2 == quantidade_lista:
+                ponteiro_1 += 1
+                if ponteiro_1 >= limite_p2:
+                    return lista
+                else:
+                    ponteiro_2 = ponteiro_1 + 1
+                    valor_posicao_1 = lista[ponteiro_1]
+                    valor_posicao_2 = lista[ponteiro_2]
+            else:
+                valor_posicao_2 = lista[ponteiro_2]
+
+            #if ponteiro_1 == quantidade_lista:
+            #    pass
+
+
+    #return lista
+
+
+# return lista
+
+lista = [0, 1, 3, 2, 1, 3, 0, 2]
+
+print(remove_repetidos(lista))
