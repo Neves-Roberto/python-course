@@ -73,3 +73,13 @@ while True:
     if primalidade:
         print(numero)
     primalidade = True
+
+
+for i in range(fim):
+
+for i in range(ini, fim):
+
+for i in range(ini, fim, passo):# determina o inicio
+e fim com passo
+
+for i in lista:# percorre toda a lista

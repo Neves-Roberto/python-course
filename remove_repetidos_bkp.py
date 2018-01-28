@@ -22,7 +22,7 @@ def remove_repetidos(lista):
         valor_posicao_2 = lista[posicao2]
         limite_p1 = tamanho - 2
         limite_p2 = tamanho - 1
-        while posicao1 != limite_p1 and posicao2 != limite_p2:
+        while posicao1 != limite_p1 and posicao2 != limite_p2 + 1:
             
             if valor_posicao1 == valor_posicao_2:
                 del(lista[posicao2])
@@ -30,18 +30,28 @@ def remove_repetidos(lista):
                 limite_p1 = tamanho - 2
                 limite_p2 = tamanho - 1
                 valor_posicao_2 = lista[posicao2]
+            
+            elif posicao2 == limite_p2:
+                    posicao1 += 1
+                    valor_posicao1 = lista[posicao1]
+            
             else:
-                posicao1 += 1
+                if posicao1 == 0 and posicao2 <= limite_p2:
+                    posicao2 += 1
+                #else:
+                #    posicao2 = posicao1 + 1
+                    
+            valor_posicao_2 = lista[posicao2]
+            
+            if posicao2 == limite_p2:
                 posicao2 = posicao1 + 1
-                valor_posicao1 = lista[posicao1]
-                valor_posicao_2 = lista[posicao2]
                 
         if valor_posicao1 == valor_posicao_2:
             del (lista[posicao2])
-
+        
         return lista
     
     
-lista = [1,2,1,3,3]
+lista = [1, 2, 1, 4,5,1,2,4,5,6,7,3,2,7,7,5]
 
 print(remove_repetidos(lista))
