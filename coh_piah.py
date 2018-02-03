@@ -69,7 +69,7 @@ def le_assinatura():
     sal = float(input("Entre o tamanho médio de sentença:"))
     sac = float(input("Entre a complexidade média da sentença:"))
     pal = float(input("Entre o tamanho medio de frase:"))
-
+    
     return [wal, ttr, hlr, sal, sac, pal]
 
 def le_textos():
@@ -80,7 +80,7 @@ def le_textos():
         textos.append(texto)
         i += 1
         texto = input("Digite o texto " + str(i) +" (aperte enter para sair):")
-
+    
     return textos
 
 def separa_sentencas(texto):
@@ -113,7 +113,7 @@ def n_palavras_unicas(lista_palavras):
         else:
             freq[p] = 1
             unicas += 1
-
+    
     return unicas
 
 def n_palavras_diferentes(lista_palavras):
@@ -126,7 +126,7 @@ def n_palavras_diferentes(lista_palavras):
             freq[p] += 1
         else:
             freq[p] = 1
-
+    
     return len(freq)
 
 def compara_assinatura(as_a, as_b):
@@ -145,7 +145,7 @@ def avalia_textos(textos, ass_cp):
     por COH-PIAH.'''
     pass
 
-    
+
 
 def main0():
     #textos = le_textos()# faz a leitura dos textos e armazena em textos
@@ -183,65 +183,79 @@ def main0():
             cont += 1
     print(palavras)
     print('quantidade de palavras ', cont)
-    
+
 def main1():
-	# textos = le_textos()# faz a leitura dos textos e armazena em textos
-    #textos = ['(1)Navegadores antigos tinham uma frase gloriosa:"Navegar eh preciso; viver nao eh preciso". Quero para mim o espirito [d]esta frase, transformada a forma para a casar como eu sou: Viver nao eh necessario; o que eh necessario eh criar. Nao conto gozar a minha vida; nem em goza-la penso. So quero torna-la grande,ainda que para isso tenha de ser o meu corpo e a (minha alma) a lenha desse fogo. So quero torna-la de toda a humanidade;ainda que para isso tenha de a perder como minha. Cada vez mais assim penso.Cada vez mais ponho da essencia animica do meu sangueo proposito impessoal de engrandecer a patria e contribuirpara a evolucao da humanidade.Eh a forma que em mim tomou o misticismo da nossa Raca.','(2)Voltei-me para ela; Capitu tinha os olhos no chao. Ergueu-os logo, devagar, e ficamos a olhar um para o outro... Confissao de criancas, tu valias bem duas ou tres paginas, mas quero ser poupado. Em verdade, nao falamos nada; o muro falou por nos. Nao nos movemos, as maos e que se estenderam pouco a pouco, todas quatro, pegando-se, apertando-se, fundindo-se. Nao marquei a hora exata daquele gesto. Devia te-la marcado; sinto a falta de uma nota escrita naquela mesma noite, e que eu poria aqui com os erros de ortografia que trouxesse, mas nao traria nenhum, tal era a diferenca entre o estudante e o adolescente. Conhecia as regras do escrever, sem suspeitar as do amar; tinha orgias de latim e era virgem de mulheres.','(3)NOSSA alegria diante dum sistema metafisico, nossa satisfacao em presenca duma construcao do pensamento, em que a organizacao espiritual do mundo se mostra num conjunto logico, coerente a harmonico, sempre dependem eminentemente da estetica; tem a mesma origem que o prazer, que a alta satisfacao, sempre serena afinal, que a atividade artistica nos proporciona quando cria a ordem e a forma a nos permite abranger com a vista o caos da vida, dando-lhe transparencia.']
-	#textos = ['a 1, oi teu bem. ola','b 2, teste .paranaue','c 3, teste1 .gingolo']
-	textos = ['ola, este eh um teste. Bom dia hoje vamos ter linhas de programacao sendo digitadas, e quando isso acontence temos diversao.','Hoje o dia amanheceu assim, como assim, se eh mesmo assim. A vida nos leva a cada coisa estranha, parece que o mundo da voltas e mais voltas']
-	print('quantidade de textos ', len(textos))
-	print(textos)
-	print('***************************************')
-	cont_texto = 0
-	cont_sentenca = 0
-	cont_frase = 0
-	cont_palavra = 0
-    quant_sentencas = []
-    quant_frases = []
-    quant_palavras = []
+    # textos = le_textos()# faz a leitura dos textos e armazena em textos
+    textos = ['(1)Navegadores antigos tinham uma frase gloriosa:"Navegar eh preciso; viver nao eh preciso". Quero para mim o espirito [d]esta frase, transformada a forma para a casar como eu sou: Viver nao eh necessario; o que eh necessario eh criar. Nao conto gozar a minha vida; nem em goza-la penso. So quero torna-la grande,ainda que para isso tenha de ser o meu corpo e a (minha alma) a lenha desse fogo. So quero torna-la de toda a humanidade;ainda que para isso tenha de a perder como minha. Cada vez mais assim penso.Cada vez mais ponho da essencia animica do meu sangueo proposito impessoal de engrandecer a patria e contribuirpara a evolucao da humanidade.Eh a forma que em mim tomou o misticismo da nossa Raca.','(2)Voltei-me para ela; Capitu tinha os olhos no chao. Ergueu-os logo, devagar, e ficamos a olhar um para o outro... Confissao de criancas, tu valias bem duas ou tres paginas, mas quero ser poupado. Em verdade, nao falamos nada; o muro falou por nos. Nao nos movemos, as maos e que se estenderam pouco a pouco, todas quatro, pegando-se, apertando-se, fundindo-se. Nao marquei a hora exata daquele gesto. Devia te-la marcado; sinto a falta de uma nota escrita naquela mesma noite, e que eu poria aqui com os erros de ortografia que trouxesse, mas nao traria nenhum, tal era a diferenca entre o estudante e o adolescente. Conhecia as regras do escrever, sem suspeitar as do amar; tinha orgias de latim e era virgem de mulheres.','(3)NOSSA alegria diante dum sistema metafisico, nossa satisfacao em presenca duma construcao do pensamento, em que a organizacao espiritual do mundo se mostra num conjunto logico, coerente a harmonico, sempre dependem eminentemente da estetica; tem a mesma origem que o prazer, que a alta satisfacao, sempre serena afinal, que a atividade artistica nos proporciona quando cria a ordem e a forma a nos permite abranger com a vista o caos da vida, dando-lhe transparencia.']
+    #textos = ['a 1, oi teu bem. ola','b 2, teste .paranaue','c 3, teste1 .gingolo']
+    #textos = ['frase1, frase2, frase3','frase1_, frase2_, frase3_']
+    #textos = ['ola, este eh um teste. Bom dia hoje vamos ter linhas de programacao sendo digitadas, e quando isso acontence temos diversao.','Hoje o dia amanheceu assim, como assim, se eh mesmo assim. A vida nos leva a cada coisa estranha, parece que o mundo da voltas e mais voltas']
+    #print('quantidade de textos ', len(textos))
+    #print(textos)
+    print('***************************************')
     
     for texto in textos:
         sentencas = separa_sentencas(texto)
-        cont_texto += 1 # conta quantos textos foram lidos
-        quant_sentencas.append(len(sentencas) - 1) # armazena na lista a quantidade de sentencas de um texto
+        quant_sentencas = []
+        quant_frases_p_sentenca = []
+        quant_palavras_p_frase = []
+        total_palavras = []
+        total_frases = []
+        total_sentencas = []
+        unicas_total = 0
+        diferentes_total = 0
+        assinaturas = []
+        lista_assinaturas = []
+        for elemento_lista in sentencas:
+            total_sentencas.append(elemento_lista)
+        quant_sentencas.append(len(sentencas)) # armazena na lista a quantidade de sentencas de um texto
         for sentenca in sentencas:
             frases = separa_frases(sentenca)
-            cont_sentenca += 1
-            quant_frases.append(len(frases) - 1)
+            for elemento_lista in frases:
+                total_frases.append(elemento_lista)
+            quant_frases_p_sentenca.append(len(frases))
             for frase in frases:
                 palavras = separa_palavras(frase)
-                #TODO CHECAR A NESSECIDADE DE PALAVRAS AGREGAR TODAS A PALAVRAS, PODE SER MELHOR
-                cont_frase += 1
-                quant_palavras.append(len(palavras) - 1)
-                unicas = n_palavras_unicas(palavras)
-                diferentes = n_palavras_diferentes(palavras)
-                print('palavras ', cont_palavra, ' -> ', palavras)
-                cont_palavra += 1
-                print(unicas)
-                print(diferentes)
+                for elemento_lista in palavras:
+                    total_palavras.append(elemento_lista) #lista com todas as palavras
+                quant_palavras_p_frase.append(len(palavras))
+                unicas_total = n_palavras_unicas(total_palavras)
+                diferentes_total = n_palavras_diferentes(total_palavras)
+        quantidade_total_palavras = len(total_palavras)
+        quantidade_total_frases = sum(quant_frases_p_sentenca)
+        quantidade_total_sentencas = sum(quant_sentencas)
+        quantidade_textos = len(textos)
+        soma_tamanho_palavras = 1#TODO MONTAR ROTINA PARA SABER O TAMANHO DAS PALAVRAS
+        #calculos:
+        # Tamanho médio de palavra: Média simples do número de caracteres por palavra.
+        wal = (soma_tamanho_palavras / quantidade_total_palavras)
+        # Relação Type-Token: Número de palavras diferentes utilizadas em um texto divididas pelo total de palavras.
+        ttr = (diferentes_total / quantidade_total_palavras)
+        # Razão Hapax Legomana é o número de palavras que aparecem uma única vez dividido pelo total de palavras. Por exemplo, na frase "O gato caçava o	rato", temos 5 palavras no total (o, gato, caçava, o, rato) mas somente 3 que aparecem só uma vez (gato, caçava, rato). Nessa frase, a relação	Hapax Legomana vale 35=0.6
+        hlr = (unicas_total / quantidade_total_palavras)
+        # Complexidade de sentença é o número total de frases divido pelo número de sentenças.
+        sac = (quantidade_total_frases / quantidade_total_sentencas)
+        sal = 0
+        pal = 0
+        assinaturas = [wal, ttr, hlr, sal, sac, pal]
+        lista_assinaturas.append(1)
+        print('quantidade total de palavras: ', quantidade_total_palavras)
+        print('quantidade total unicas: ', unicas_total)
+        print('quantidade total diferentes: ', diferentes_total)
+        print('quantidade total de frases: ', quantidade_total_frases)
+        print('quantidade total de sentencas: ', quantidade_total_sentencas)
+        print('quantidade de textos ', quantidade_textos)
+        print('Tamanho médio de palavras: ', wal)
+        print('Relação Type-Token: ', ttr)
+        print('Razão Hapax Legomana: ', hlr)
+        print('Complexidade média da sentenca: ', sac)
+        print(total_palavras)
+        print('***************************************')
+        
+    print(lista_assinaturas)
     
-'''
-	for texto in textos:
-		print('**************----inicio------******************')
-		print('texto ', cont_texto, ' -> ',texto)
-		cont_texto += 1
-		sentencas = separa_sentencas(texto)
-		for sentenca in sentencas:
-			print('sentencas ', cont_sentenca, ' -> ',sentencas)
-			cont_sentenca += 1
-			frases = separa_frases(sentenca)
-			for frase in frases:
-				print('frases  ', cont_frase, ' -> ',frases)
-				cont_frase += 1
-				palavras = separa_palavras(frase)
-				unicas = n_palavras_unicas(palavras)
-				diferentes = n_palavras_diferentes(palavras)
-				print('palavras ', cont_palavra, ' -> ',palavras)
-				cont_palavra += 1
-				print(unicas)
-				print(diferentes)
-				print('**************------fim--------******************')
-				
-'''
-				
+    
+    
+    
+    
 main1()
