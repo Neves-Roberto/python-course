@@ -186,7 +186,7 @@ def main0():
     
 def main1():
 	# textos = le_textos()# faz a leitura dos textos e armazena em textos
-	#textos = ['(1)Navegadores antigos tinham uma frase gloriosa:"Navegar eh preciso; viver nao eh preciso". Quero para mim o espirito [d]esta frase, transformada a forma para a casar como eu sou: Viver nao eh necessario; o que eh necessario eh criar. Nao conto gozar a minha vida; nem em goza-la penso. So quero torna-la grande,ainda que para isso tenha de ser o meu corpo e a (minha alma) a lenha desse fogo. So quero torna-la de toda a humanidade;ainda que para isso tenha de a perder como minha. Cada vez mais assim penso.Cada vez mais ponho da essencia animica do meu sangueo proposito impessoal de engrandecer a patria e contribuirpara a evolucao da humanidade.Eh a forma que em mim tomou o misticismo da nossa Raca.','(2)Voltei-me para ela; Capitu tinha os olhos no chao. Ergueu-os logo, devagar, e ficamos a olhar um para o outro... Confissao de criancas, tu valias bem duas ou tres paginas, mas quero ser poupado. Em verdade, nao falamos nada; o muro falou por nos. Nao nos movemos, as maos e que se estenderam pouco a pouco, todas quatro, pegando-se, apertando-se, fundindo-se. Nao marquei a hora exata daquele gesto. Devia te-la marcado; sinto a falta de uma nota escrita naquela mesma noite, e que eu poria aqui com os erros de ortografia que trouxesse, mas nao traria nenhum, tal era a diferenca entre o estudante e o adolescente. Conhecia as regras do escrever, sem suspeitar as do amar; tinha orgias de latim e era virgem de mulheres.','(3)NOSSA alegria diante dum sistema metafisico, nossa satisfacao em presenca duma construcao do pensamento, em que a organizacao espiritual do mundo se mostra num conjunto logico, coerente a harmonico, sempre dependem eminentemente da estetica; tem a mesma origem que o prazer, que a alta satisfacao, sempre serena afinal, que a atividade artistica nos proporciona quando cria a ordem e a forma a nos permite abranger com a vista o caos da vida, dando-lhe transparencia.']
+    #textos = ['(1)Navegadores antigos tinham uma frase gloriosa:"Navegar eh preciso; viver nao eh preciso". Quero para mim o espirito [d]esta frase, transformada a forma para a casar como eu sou: Viver nao eh necessario; o que eh necessario eh criar. Nao conto gozar a minha vida; nem em goza-la penso. So quero torna-la grande,ainda que para isso tenha de ser o meu corpo e a (minha alma) a lenha desse fogo. So quero torna-la de toda a humanidade;ainda que para isso tenha de a perder como minha. Cada vez mais assim penso.Cada vez mais ponho da essencia animica do meu sangueo proposito impessoal de engrandecer a patria e contribuirpara a evolucao da humanidade.Eh a forma que em mim tomou o misticismo da nossa Raca.','(2)Voltei-me para ela; Capitu tinha os olhos no chao. Ergueu-os logo, devagar, e ficamos a olhar um para o outro... Confissao de criancas, tu valias bem duas ou tres paginas, mas quero ser poupado. Em verdade, nao falamos nada; o muro falou por nos. Nao nos movemos, as maos e que se estenderam pouco a pouco, todas quatro, pegando-se, apertando-se, fundindo-se. Nao marquei a hora exata daquele gesto. Devia te-la marcado; sinto a falta de uma nota escrita naquela mesma noite, e que eu poria aqui com os erros de ortografia que trouxesse, mas nao traria nenhum, tal era a diferenca entre o estudante e o adolescente. Conhecia as regras do escrever, sem suspeitar as do amar; tinha orgias de latim e era virgem de mulheres.','(3)NOSSA alegria diante dum sistema metafisico, nossa satisfacao em presenca duma construcao do pensamento, em que a organizacao espiritual do mundo se mostra num conjunto logico, coerente a harmonico, sempre dependem eminentemente da estetica; tem a mesma origem que o prazer, que a alta satisfacao, sempre serena afinal, que a atividade artistica nos proporciona quando cria a ordem e a forma a nos permite abranger com a vista o caos da vida, dando-lhe transparencia.']
 	#textos = ['a 1, oi teu bem. ola','b 2, teste .paranaue','c 3, teste1 .gingolo']
 	textos = ['ola, este eh um teste. Bom dia hoje vamos ter linhas de programacao sendo digitadas, e quando isso acontence temos diversao.','Hoje o dia amanheceu assim, como assim, se eh mesmo assim. A vida nos leva a cada coisa estranha, parece que o mundo da voltas e mais voltas']
 	print('quantidade de textos ', len(textos))
@@ -196,6 +196,31 @@ def main1():
 	cont_sentenca = 0
 	cont_frase = 0
 	cont_palavra = 0
+    quant_sentencas = []
+    quant_frases = []
+    quant_palavras = []
+    
+    for texto in textos:
+        sentencas = separa_sentencas(texto)
+        cont_texto += 1 # conta quantos textos foram lidos
+        quant_sentencas.append(len(sentencas) - 1) # armazena na lista a quantidade de sentencas de um texto
+        for sentenca in sentencas:
+            frases = separa_frases(sentenca)
+            cont_sentenca += 1
+            quant_frases.append(len(frases) - 1)
+            for frase in frases:
+                palavras = separa_palavras(frase)
+                #TODO CHECAR A NESSECIDADE DE PALAVRAS AGREGAR TODAS A PALAVRAS, PODE SER MELHOR
+                cont_frase += 1
+                quant_palavras.append(len(palavras) - 1)
+                unicas = n_palavras_unicas(palavras)
+                diferentes = n_palavras_diferentes(palavras)
+                print('palavras ', cont_palavra, ' -> ', palavras)
+                cont_palavra += 1
+                print(unicas)
+                print(diferentes)
+    
+'''
 	for texto in textos:
 		print('**************----inicio------******************')
 		print('texto ', cont_texto, ' -> ',texto)
@@ -216,5 +241,7 @@ def main1():
 				print(unicas)
 				print(diferentes)
 				print('**************------fim--------******************')
+				
+'''
 				
 main1()
