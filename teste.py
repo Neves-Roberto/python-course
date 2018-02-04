@@ -1,10 +1,2 @@
-def desenha(linha):    
-    while linha > 0:
-        coluna = 1
-        while coluna <= linha:
-            print('*', end = "")
-            coluna = coluna + 1
-        print()
-        linha = linha - 1
-
-desenha(5)
+lista = [54, 23, 67, 26, 12, 58]
+print(lista.index(min(lista)) + 1)
