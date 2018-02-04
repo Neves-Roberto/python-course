@@ -80,8 +80,8 @@ def compara_assinatura(as_a, as_b):
     de similaridade nas assinaturas.'''
     sab = 0
     for i in range(6):
-        sab += abs(as_a[i] - as_b[i])
-    return round(sab/6, 2)
+        sab += (abs(as_a[i] - as_b[i])/6)
+    return round(sab,2)
 
 
 def calcula_assinatura(texto):
@@ -116,25 +116,45 @@ def calcula_assinatura(texto):
     for elementos in total_palavras:
         for caracter in elementos:
             total_caracter.append(caracter)
-    quantidade_total_caracter = len(total_caracter)
+    
+    quantidade_total_caracter = len(total_caracter) - total_caracter.count('-')
     quantidade_total_palavras = len(total_palavras)
     quantidade_total_frases = sum(quant_frases_p_sentenca)
     quantidade_total_sentencas = sum(quant_sentencas)
     # calculos:
     # Tamanho médio de palavra: Média simples do número de caracteres por palavra.
-    wal = round((quantidade_total_caracter / quantidade_total_palavras), 2)
+    wal = (quantidade_total_caracter / quantidade_total_palavras)
     # Relação Type-Token: Número de palavras diferentes utilizadas em um texto divididas pelo total de palavras.
-    ttr = round((diferentes_total / quantidade_total_palavras), 2)
+    ttr = (diferentes_total / quantidade_total_palavras)
     # Razão Hapax Legomana é o número de palavras que aparecem uma única vez dividido pelo total de palavras. Por exemplo, na frase "O gato caçava o	rato", temos 5 palavras no total (o, gato, caçava, o, rato) mas somente 3 que aparecem só uma vez (gato, caçava, rato). Nessa frase, a relação	Hapax Legomana vale 35=0.6
-    hlr = round((unicas_total / quantidade_total_palavras), 2)
+    hlr = (unicas_total / quantidade_total_palavras)
     # Complexidade de sentença é o número total de frases divido pelo número de sentenças.
-    sac = round((quantidade_total_frases / quantidade_total_sentencas), 2)
+    sac = (quantidade_total_frases / quantidade_total_sentencas)
     # Tamanho médio de sentença é a soma dos números de caracteres em todas as sentenças dividida pelo número de sentenças (os caracteres que separam	uma sentença da outra não devem ser contabilizados como parte da sentença).
-    sal = round((quantidade_total_caracter / quantidade_total_sentencas), 2)
+    sal = (quantidade_total_caracter / quantidade_total_sentencas)
     # Tamanho médio de frase: Média simples do número de caracteres por frase. -> calculo do numero total de caracteres dividido por numero total de frases
-    pal = round((quantidade_total_caracter / quantidade_total_frases), 2)
-    assinaturas = [wal, ttr, hlr, sal, sac, pal]
+    pal = quantidade_total_caracter / quantidade_total_frases
+    assinaturas = [round(wal,2), round(ttr,2), round(hlr,2), round(sal,2), round(sac,2), round(pal,2)]
     lista_assinaturas.append(assinaturas)
+    #print(total_frases)
+    #print(len(total_frases))
+    #print(total_caracter)
+    #print(len(total_caracter))
+    
+    print('frases p sentenca ',quant_frases_p_sentenca)
+    print('soma sentencas ',quantidade_total_sentencas)
+    print('quantidade frases',quantidade_total_frases)
+    print('quantidade sentencas',quantidade_total_sentencas)
+    print('quantidade caracteres', quantidade_total_caracter)
+    print('quantidade palavras', quantidade_total_palavras)
+    print('quantidade unicas ',unicas_total)
+    print('quantidade diferentes ', diferentes_total)
+    print('total frases\n',total_frases)
+    print('total sentencas\n',total_sentencas)
+    print('total palavras\n',total_palavras)
+    print('total caracter\n',total_caracter)
+    print(total_caracter.count('-'))
+    
     return lista_assinaturas
 
 
@@ -147,23 +167,35 @@ def avalia_textos(textos, ass_cp):
     for texto in textos:
         lista_assinaturas.append(calcula_assinatura(texto))
     for [assinatura] in lista_assinaturas:
+        print(assinatura)
         grau_similaridade.append(compara_assinatura(ass_cp,assinatura))
+        print(grau_similaridade)
     return grau_similaridade.index(min(grau_similaridade)) + 1
 
 
 
 def main():
     # textos = le_textos()# faz a leitura dos textos e armazena em textos
-    textos = ['Navegadores antigos tinham uma frase gloriosa:"Navegar é preciso; viver não é preciso".Quero para mim o espírito [d]esta frase,transformada a forma para a casar como eu sou:Viver não é necessário; o que é necessário é criar.Não conto gozar a minha vida; nem em gozá-la penso.Só quero torná-la grande,ainda que para isso tenha de ser o meu corpo e a (minha alma) a lenha desse fogo.Só quero torná-la de toda a humanidade;ainda que para isso tenha de a perder como minha.Cada vez mais assim penso.Cada vez mais ponho da essência anímica do meu sangueo propósito impessoal de engrandecer a pátria e contribuirpara a evolução da humanidade.É a forma que em mim tomou o misticismo da nossa Raça.', 'Voltei-me para ela; Capitu tinha os olhos no chão. Ergueu-os logo, devagar, e ficamos a olhar um para o outro... Confissão de crianças, tu valias bem duas ou três páginas, mas quero ser poupado. Em verdade, não falamos nada; o muro falou por nós. Não nos movemos, as mãos é que se estenderam pouco a pouco, todas quatro, pegando-se, apertando-se, fundindo-se. Não marquei a hora exata daquele gesto. Devia tê-la marcado; sinto a falta de uma nota escrita naquela mesma noite, e que eu poria aqui com os erros de ortografia que trouxesse, mas não traria nenhum, tal era a diferença entre o estudante e o adolescente. Conhecia as regras do escrever, sem suspeitar as do amar; tinha orgias de latim e era virgem de mulheres.', 'NOSSA alegria diante dum sistema metafisico, nossa satisfação em presença duma construção do pensamento, em que a organização espiritual do mundo se mostra num conjunto lógico, coerente a harmônico, sempre dependem eminentemente da estética; têm a mesma origem que o prazer, que a alta satisfação, sempre serena afinal, que a atividade artística nos proporciona quando cria a ordem e a forma a nos permite abranger com a vista o caos da vida, dando-lhe transparência.']
+    #textos = ['Navegadores antigos tinham uma frase gloriosa:"Navegar é preciso; viver não é preciso".Quero para mim o espírito [d]esta frase,transformada a forma para a casar como eu sou:Viver não é necessário; o que é necessário é criar.Não conto gozar a minha vida; nem em gozá-la penso.Só quero torná-la grande,ainda que para isso tenha de ser o meu corpo e a (minha alma) a lenha desse fogo.Só quero torná-la de toda a humanidade;ainda que para isso tenha de a perder como minha.Cada vez mais assim penso.Cada vez mais ponho da essência anímica do meu sangueo propósito impessoal de engrandecer a pátria e contribuirpara a evolução da humanidade.É a forma que em mim tomou o misticismo da nossa Raça.', 'Voltei-me para ela; Capitu tinha os olhos no chão. Ergueu-os logo, devagar, e ficamos a olhar um para o outro... Confissão de crianças, tu valias bem duas ou três páginas, mas quero ser poupado. Em verdade, não falamos nada; o muro falou por nós. Não nos movemos, as mãos é que se estenderam pouco a pouco, todas quatro, pegando-se, apertando-se, fundindo-se. Não marquei a hora exata daquele gesto. Devia tê-la marcado; sinto a falta de uma nota escrita naquela mesma noite, e que eu poria aqui com os erros de ortografia que trouxesse, mas não traria nenhum, tal era a diferença entre o estudante e o adolescente. Conhecia as regras do escrever, sem suspeitar as do amar; tinha orgias de latim e era virgem de mulheres.', 'NOSSA alegria diante dum sistema metafisico, nossa satisfação em presença duma construção do pensamento, em que a organização espiritual do mundo se mostra num conjunto lógico, coerente a harmônico, sempre dependem eminentemente da estética; têm a mesma origem que o prazer, que a alta satisfação, sempre serena afinal, que a atividade artística nos proporciona quando cria a ordem e a forma a nos permite abranger com a vista o caos da vida, dando-lhe transparência.']
+    #textos = ['Navegadores antigos tinham uma frase gloriosa:"Navegar é preciso; viver não é preciso".Quero para mim o espírito [d]esta frase,transformada a forma para a casar como eu sou:Viver não é necessário; o que é necessário é criar.Não conto gozar a minha vida; nem em gozá-la penso.Só quero torná-la grande,ainda que para isso tenha de ser o meu corpo e a (minha alma) a lenha desse fogo.Só quero torná-la de toda a humanidade;ainda que para isso tenha de a perder como minha.Cada vez mais assim penso.Cada vez mais ponho da essência anímica do meu sangueo propósito impessoal de engrandecer a pátria e contribuirpara a evolução da humanidade.É a forma que em mim tomou o misticismo da nossa Raça.']
+    #textos = ['Voltei-me para ela; Capitu tinha os olhos no chão. Ergueu-os logo, devagar, e ficamos a olhar um para o outro... Confissão de crianças, tu valias bem duas ou três páginas, mas quero ser poupado. Em verdade, não falamos nada; o muro falou por nós. Não nos movemos, as mãos é que se estenderam pouco a pouco, todas quatro, pegando-se, apertando-se, fundindo-se. Não marquei a hora exata daquele gesto. Devia tê-la marcado; sinto a falta de uma nota escrita naquela mesma noite, e que eu poria aqui com os erros de ortografia que trouxesse, mas não traria nenhum, tal era a diferença entre o estudante e o adolescente. Conhecia as regras do escrever, sem suspeitar as do amar; tinha orgias de latim e era virgem de mulheres.']
+    textos = ['NOSSA alegria diante dum sistema metafisico, nossa satisfação em presença duma construção do pensamento, em que a organização espiritual do mundo se mostra num conjunto lógico, coerente a harmônico, sempre dependem eminentemente da estética; têm a mesma origem que o prazer, que a alta satisfação, sempre serena afinal, que a atividade artística nos proporciona quando cria a ordem e a forma a nos permite abranger com a vista o caos da vida, dando-lhe transparência.']
     #textos = ['a 1, oi teu bem. ola','b 2, teste .paranaue','c 3, teste1 .gingolo']
     #textos = ['O gato cacava o rato','O gato cacava o rato','O gato cacava o rato']
     #textos = ['ola, este eh um teste. Bom dia hoje vamos ter linhas de programacao sendo digitadas, e quando isso acontence temos diversao.','Hoje o dia amanheceu assim, como assim, se eh mesmo assim. A vida nos leva a cada coisa estranha, parece que o mundo da voltas e mais voltas']
-    
+    #textos = ['a']
     assinatura_teste = [4.79,0.72,0.56,80.5,2.5,31.6]
     print('***************************************')
+    print(assinatura_teste)
+    #ass1 = [4.33, 0.23, 0.14, 13.28, 1.86, 0.0]
+    #ass2 = [4.33, 0.23, 0.14, 13.28, 1.86, 0.0]
+    ass1 = [4.34, 0.05, 0.02, 12.81, 2.16, 0.0]
+    ass2 = [3.96, 0.05, 0.02, 22.22, 3.41, 0.0]
     #assinatura_teste = le_assinatura()
     #textos = le_textos()
+    #print(textos)
     print('\nO autor do texto {} está infectado com COH-PIAH'.format(avalia_textos(textos,assinatura_teste)))
+    #print(compara_assinatura(ass1,ass2))
     
     
 main()
@@ -174,6 +206,25 @@ O resultado dos testes com seu programa foi:
 ***** TypeError: unsupported operand type(s) for -: 'list' and 'float'
 ***** [0.25 pontos]: Testando calculo assinatura (text = Voltei-me para ela; Capitu tinha os olhos no chão. Ergueu-os logo, devagar, e ficamos a olhar um para o outro... Confissão de crianças, tu valias bem duas ou três páginas, mas quero ser poupado. Em verdade, não falamos nada; o muro falou por nós. Não nos movemos, as mãos é que se estenderam pouco a pouco, todas quatro, pegando-se, apertando-se, fundindo-se. Não marquei a hora exata daquele gesto. Devia tê-la marcado; sinto a falta de uma nota escrita naquela mesma noite, e que eu poria aqui com os erros de ortografia que trouxesse, mas não traria nenhum, tal era a diferença entre o estudante e o adolescente. Conhecia as regras do escrever, sem suspeitar as do amar; tinha orgias de latim e era virgem de mulheres.) - Falhou
 ***** TypeError: unsupported operand type(s) for -: 'list' and 'float'
+***** [0.25 pontos]: Testando calculo assinatura (text = Navegadores antigos tinham uma frase gloriosa:"Navegar é preciso; viver não é preciso".Quero para mim o espírito [d]esta frase,transformada a forma para a casar como eu sou:Viver não é necessário; o que é necessário é criar.Não conto gozar a minha vida; nem em gozá-la penso.Só quero torná-la grande,ainda que para isso tenha de ser o meu corpo e a (minha alma) a lenha desse fogo.Só quero torná-la de toda a humanidade;ainda que para isso tenha de a perder como minha.Cada vez mais assim penso.Cada vez mais ponho da essência anímica do meu sangueo propósito impessoal de engrandecer a pátria e contribuirpara a evolução da humanidade.É a forma que em mim tomou o misticismo da nossa Raça.) - Falhou
+***** TypeError: unsupported operand type(s) for -: 'list' and 'float'
+***** [0.5 pontos]: Testando avaliação dos textos (Textos = ['Navegadores antigos tinham uma frase gloriosa:"Navegar é preciso; viver não é preciso".Quero para mim o espírito [d]esta frase,transformada a forma para a casar como eu sou:Viver não é necessário; o que é necessário é criar.Não conto gozar a minha vida; nem em gozá-la penso.Só quero torná-la grande,ainda que para isso tenha de ser o meu corpo e a (minha alma) a lenha desse fogo.Só quero torná-la de toda a humanidade;ainda que para isso tenha de a perder como minha.Cada vez mais assim penso.Cada vez mais ponho da essência anímica do meu sangueo propósito impessoal de engrandecer a pátria e contribuirpara a evolução da humanidade.É a forma que em mim tomou o misticismo da nossa Raça.', 'Voltei-me para ela; Capitu tinha os olhos no chão. Ergueu-os logo, devagar, e ficamos a olhar um para o outro... Confissão de crianças, tu valias bem duas ou três páginas, mas quero ser poupado. Em verdade, não falamos nada; o muro falou por nós. Não nos movemos, as mãos é que se estenderam pouco a pouco, todas quatro, pegando-se, apertando-se, fundindo-se. Não marquei a hora exata daquele gesto. Devia tê-la marcado; sinto a falta de uma nota escrita naquela mesma noite, e que eu poria aqui com os erros de ortografia que trouxesse, mas não traria nenhum, tal era a diferença entre o estudante e o adolescente. Conhecia as regras do escrever, sem suspeitar as do amar; tinha orgias de latim e era virgem de mulheres.', 'NOSSA alegria diante dum sistema metafisico, nossa satisfação em presença duma construção do pensamento, em que a organização espiritual do mundo se mostra num conjunto lógico, coerente a harmônico, sempre dependem eminentemente da estética; têm a mesma origem que o prazer, que a alta satisfação, sempre serena afinal, que a atividade artística nos proporciona quando cria a ordem e a forma a nos permite abranger com a vista o caos da vida, dando-lhe transparência.'] , Assinatura = [4.79, 0.72, 0.56, 80.5, 2.5, 31.6] ) - Falhou
+***** AssertionError: Esperado: 2; recebido: 1
+'''
+
+#def test_calcula_assinatura():
+#    assert calcula_assinatura()
+
+'''
+O resultado dos testes com seu programa foi:
+***** [0.25 pontos]: Comparando assinaturas do textos (ass1 = [4.33, 0.23, 0.14, 13.28, 1.86, 0.0], ass2 = [4.33, 0.23, 0.14, 13.28, 1.86, 0.0]) - Falhou
+***** TypeError: unsupported operand type(s) for -: 'tuple' and 'float'
+***** [0.25 pontos]: Comparando assinaturas do textos (ass1 = [4.34, 0.05, 0.02, 12.81, 2.16, 0.0], ass2 = [3.96, 0.05, 0.02, 22.22, 3.41, 0.0]) - Falhou
+***** Timeout
+***** [0.25 pontos]: Testando calculo assinatura (text = NOSSA alegria diante dum sistema metafisico, nossa satisfação em presença duma construção do pensamento, em que a organização espiritual do mundo se mostra num conjunto lógico, coerente a harmônico, sempre dependem eminentemente da estética; têm a mesma origem que o prazer, que a alta satisfação, sempre serena afinal, que a atividade artística nos proporciona quando cria a ordem e a forma a nos permite abranger com a vista o caos da vida, dando-lhe transparência.) - Falhou
+***** TypeError: unsupported operand type(s) for -: 'list' and 'float'
+***** [0.25 pontos]: Testando calculo assinatura (text = Voltei-me para ela; Capitu tinha os olhos no chão. Ergueu-os logo, devagar, e ficamos a olhar um para o outro... Confissão de crianças, tu valias bem duas ou três páginas, mas quero ser poupado. Em verdade, não falamos nada; o muro falou por nós. Não nos movemos, as mãos é que se estenderam pouco a pouco, todas quatro, pegando-se, apertando-se, fundindo-se. Não marquei a hora exata daquele gesto. Devia tê-la marcado; sinto a falta de uma nota escrita naquela mesma noite, e que eu poria aqui com os erros de ortografia que trouxesse, mas não traria nenhum, tal era a diferença entre o estudante e o adolescente. Conhecia as regras do escrever, sem suspeitar as do amar; tinha orgias de latim e era virgem de mulheres.) - Falhou
+***** Timeout
 ***** [0.25 pontos]: Testando calculo assinatura (text = Navegadores antigos tinham uma frase gloriosa:"Navegar é preciso; viver não é preciso".Quero para mim o espírito [d]esta frase,transformada a forma para a casar como eu sou:Viver não é necessário; o que é necessário é criar.Não conto gozar a minha vida; nem em gozá-la penso.Só quero torná-la grande,ainda que para isso tenha de ser o meu corpo e a (minha alma) a lenha desse fogo.Só quero torná-la de toda a humanidade;ainda que para isso tenha de a perder como minha.Cada vez mais assim penso.Cada vez mais ponho da essência anímica do meu sangueo propósito impessoal de engrandecer a pátria e contribuirpara a evolução da humanidade.É a forma que em mim tomou o misticismo da nossa Raça.) - Falhou
 ***** TypeError: unsupported operand type(s) for -: 'list' and 'float'
 ***** [0.5 pontos]: Testando avaliação dos textos (Textos = ['Navegadores antigos tinham uma frase gloriosa:"Navegar é preciso; viver não é preciso".Quero para mim o espírito [d]esta frase,transformada a forma para a casar como eu sou:Viver não é necessário; o que é necessário é criar.Não conto gozar a minha vida; nem em gozá-la penso.Só quero torná-la grande,ainda que para isso tenha de ser o meu corpo e a (minha alma) a lenha desse fogo.Só quero torná-la de toda a humanidade;ainda que para isso tenha de a perder como minha.Cada vez mais assim penso.Cada vez mais ponho da essência anímica do meu sangueo propósito impessoal de engrandecer a pátria e contribuirpara a evolução da humanidade.É a forma que em mim tomou o misticismo da nossa Raça.', 'Voltei-me para ela; Capitu tinha os olhos no chão. Ergueu-os logo, devagar, e ficamos a olhar um para o outro... Confissão de crianças, tu valias bem duas ou três páginas, mas quero ser poupado. Em verdade, não falamos nada; o muro falou por nós. Não nos movemos, as mãos é que se estenderam pouco a pouco, todas quatro, pegando-se, apertando-se, fundindo-se. Não marquei a hora exata daquele gesto. Devia tê-la marcado; sinto a falta de uma nota escrita naquela mesma noite, e que eu poria aqui com os erros de ortografia que trouxesse, mas não traria nenhum, tal era a diferença entre o estudante e o adolescente. Conhecia as regras do escrever, sem suspeitar as do amar; tinha orgias de latim e era virgem de mulheres.', 'NOSSA alegria diante dum sistema metafisico, nossa satisfação em presença duma construção do pensamento, em que a organização espiritual do mundo se mostra num conjunto lógico, coerente a harmônico, sempre dependem eminentemente da estética; têm a mesma origem que o prazer, que a alta satisfação, sempre serena afinal, que a atividade artística nos proporciona quando cria a ordem e a forma a nos permite abranger com a vista o caos da vida, dando-lhe transparência.'] , Assinatura = [4.79, 0.72, 0.56, 80.5, 2.5, 31.6] ) - Falhou
