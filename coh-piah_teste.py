@@ -1,8 +1,4 @@
 import re
-
-
-#####  FunÃÂ§ÃÂµes Padroes  #####
-
 # A funcao le os valores dos tracos linguisticos do modelo e devolve uma assinatura a ser comparada com os textos fornecidos
 def le_assinatura():
     print("Bem-vindo ao detector automÃÂ¡tico de COH-PIAH.")
@@ -15,8 +11,6 @@ def le_assinatura():
     pal = float(input("Entre o tamanho medio de frase:"))
     
     return [wal, ttr, hlr, sal, sac, pal]
-
-
 # A funcao que le textos na interface com o usuÃÂ¡rio
 def le_textos():
     i = 1
@@ -28,8 +22,6 @@ def le_textos():
         texto = input("Digite o texto " + str(i) + " (aperte enter para sair):")
     
     return textos
-
-
 # A funcao recebe uma texto e devolve uma lista das sentencas dentro do texto (separa pontuacao final)
 def separa_sentencas(texto):
     sentencas = re.split(r'[.!?]+', texto)
@@ -37,16 +29,13 @@ def separa_sentencas(texto):
         del sentencas[-1]
     return sentencas
 
-
 # A funcao recebe uma sentenca e devolve uma lista das frases dentro da sentenca (separa por virgulas)
 def separa_frases(sentenca):
     return re.split(r'[,:;]+', sentenca)
 
-
 def separa_palavras(frase):
     '''A funcao recebe uma frase e devolve uma lista das palavras dentro da frase'''
     return frase.split()
-
 
 def n_palavras_unicas(lista_palavras):
     '''Essa funcao recebe uma lista de palavras e devolve o numero de palavras que aparecem uma unica vez'''
@@ -77,7 +66,6 @@ def n_palavras_diferentes(lista_palavras):
     
     return len(freq)
 
-
 # Essa funcao recebe duas assinaturas de texto e deve devolver o grau de similaridade nas assinaturas
 def compara_assinatura(as_a, as_b):
     valorLinguistico = 0
@@ -92,7 +80,6 @@ def compara_assinatura(as_a, as_b):
     
     return valorLinguistico / 6
 
-
 # Essa funcao recebe um texto e deve devolver a assinatura do texto.
 def calcula_assinatura(texto):
     # quebro o texto em suas partes
@@ -106,7 +93,6 @@ def calcula_assinatura(texto):
     wal = calcula_tamanho_medio_palavra(conjPalavras)
     ttr = calcula_typen_token(conjPalavras)
     hlr = calcula_Hapax_Legomana(conjPalavras)
-    
     sal = calcula_tamanho_medio_sentencas(conjSentencas)
     sac = calcula_complexidade_sentenca(conjFrases, len(conjSentencas))
     pal = calcula_tamanho_medio_frase(conjFrases)
@@ -135,11 +121,6 @@ def avalia_textos(textos, ass_cp):
             numTex = i + 1
     
     return numTex
-
-
-############################
-#####  Minhas Funcoes  #####
-############################
 
 # extrai todas as frases de um texto
 def extrai_frases(sentencas):
@@ -172,7 +153,6 @@ def calcula_tamanho_medio_palavra(palavras):
     
     return tamanho / len(palavras)
 
-
 # Calcula Numero de palavras diferentes utilizadas em um texto divididas pelo total de palavras.
 def calcula_typen_token(palavras):
     numPalavrasDif = n_palavras_diferentes(palavras)
@@ -186,7 +166,6 @@ def calcula_Hapax_Legomana(palavras):
     
     return numPalavasUnicas / len(palavras)
 
-
 # Media simples do nÃºmero de caracteres por sentenÃ§a, sem os caracteres delimitadores
 def calcula_tamanho_medio_sentencas(sentencas):
     # delimitadores = .!?
@@ -199,13 +178,11 @@ def calcula_tamanho_medio_sentencas(sentencas):
     
     return tamanho / len(sentencas)
 
-
 # nÃºmero total de frases divido pelo nÃºmero de sentenÃ§as
 def calcula_complexidade_sentenca(frases, numeroSentencas):
     numFrases = len(frases)
     
     return numFrases / numeroSentencas
-
 
 # soma do numero de caracteres em cada frase dividida pelo numero de frases no texto, sem os separadores, sem os caracteres delimitadores
 def calcula_tamanho_medio_frase(frases):
@@ -216,7 +193,6 @@ def calcula_tamanho_medio_frase(frases):
         tamanho += len(f)
     
     return tamanho / len(frases)
-
 
 def main():
     # capturo a assinatura padrao
@@ -232,6 +208,5 @@ def main():
     numSimilar = avalia_textos(textos, assinaturaPadrao)
     
     print("O autor do texto {} esta infectado com COH-PIAH".format(numSimilar))
-
 
 main()
