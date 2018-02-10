@@ -5,6 +5,7 @@ def dimensoes(matriz):
 	
 	dim = str(linhas) + 'X' + str(colunas)
 	return dim
+<<<<<<< HEAD
 
 m = ([[1, 2], [3, 4]])
 print('dimensoes da matriz: ', dimensoes(m))
@@ -32,3 +33,5 @@ def test_dimensoes_7():
 def test_dimensoes_8():
 	assert dimensoes(([[1]])) == '1X1'
 
+=======
+>>>>>>> 57884b8afa6070f352fece514430782ea0dacba1
