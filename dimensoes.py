@@ -6,5 +6,29 @@ def dimensoes(matriz):
 	dim = str(linhas) + 'X' + str(colunas)
 	return dim
 
-m = [[1,2,3],[4,5,6],[7,8,9]]
+m = ([[1, 2], [3, 4]])
 print('dimensoes da matriz: ', dimensoes(m))
+
+
+def test_dimensoes_1():
+	assert dimensoes([[1, 2], [3, 4]]) == '2X2'
+
+def test_dimensoes_2():
+	assert dimensoes(([[1, 1], [1, 1]])) == '2X2'
+
+def test_dimensoes_3():
+	assert dimensoes(([[1, 2, 7, 1], [3, 4, 8, 1], [1, 2, 3, 1], [2, 3, 6, 7]])) == '4X4'
+
+def test_dimensoes_4():
+	assert dimensoes(([[1, 2, 7, 1], [3, 4, 8, 1], [1, 2, 3, 1]])) == '3X4'
+
+def test_dimensoes_5():
+	assert dimensoes(([[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]])) == '4X3'
+
+def test_dimensoes_6():
+	assert dimensoes(([[1], [2]])) == '2X1'
+def test_dimensoes_7():
+	assert dimensoes(([[1, 2]])) == '1X2'
+def test_dimensoes_8():
+	assert dimensoes(([[1]])) == '1X1'
+
