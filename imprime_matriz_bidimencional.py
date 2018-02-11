@@ -16,6 +16,10 @@ def cria_matriz_bidimensional(matriz_x_y):
 	
 
 def main():
-	print(cria_matriz_bidimensional(cria_matriz(10,10,'{-x-}')))
+	print(cria_matriz_bidimensional(cria_matriz(10,1,'{-x-}')))
 
 main()
+
+
+minha_matriz = [[1], [2], [3]]
+minha_matriz = [[1, 2, 3], [4, 5, 6]]
