@@ -1,14 +1,17 @@
+
 def dimensoes(matriz):
 	linhas = len(matriz)
 	for i in matriz:
 		colunas = len(i)
 	
 	dim = str(linhas) + 'X' + str(colunas)
-	return dim
+	print(dim)
 
-m = ([[1, 2], [3, 4]])
-print('dimensoes da matriz: ', dimensoes(m))
+#minha_matriz = [[1], [2], [3]]
+#var = dimensoes(minha_matriz)
+#print(var)
 
+'''
 
 def test_dimensoes_1():
 	assert dimensoes([[1, 2], [3, 4]]) == '2X2'
@@ -27,8 +30,13 @@ def test_dimensoes_5():
 
 def test_dimensoes_6():
 	assert dimensoes(([[1], [2]])) == '2X1'
+
 def test_dimensoes_7():
 	assert dimensoes(([[1, 2]])) == '1X2'
+
 def test_dimensoes_8():
 	assert dimensoes(([[1]])) == '1X1'
 
+def test_dimensoes_9():
+	assert dimensoes([[1], [2], [3]]) == '3X1'
+'''
