@@ -1,0 +1,6 @@
+'''
+Escreva uma função que recebe array de strings como parâmetro e devolve
+ o primeiro string na ordem lexicográfica,
+ ignorando-se letras maiúsculas e minúsculas.
+'''
+ 
