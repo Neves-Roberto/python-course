@@ -21,3 +21,29 @@ menor_nome(['maria', ' josé  ', '  PAULO', 'Catarina  '])
 menor_nome(['Bárbara', 'JOSÉ  ', 'Bill'])
 # deve devolver José
 '''
+
+def menor_nome(lista_nomes):
+    nome_menor = ''
+    tamanho_menor = 100
+    for nome in lista_nomes:
+        nome = nome.lstrip()
+        nome = nome.rstrip()
+        
+        tamanho_nome = len(nome)
+        if tamanho_nome < tamanho_menor:
+            tamanho_menor = tamanho_nome
+            nome_menor = nome
+        
+        
+    return nome_menor.capitalize()
+
+#print(menor_nome(['maria', ' josé  ', '  PAULO', 'Catarina  ']))
+
+def test_01():
+    assert menor_nome(['maria', 'josé', 'PAULO', 'Catarina']) == 'José'
+
+def test_02():
+    assert menor_nome(['maria', ' josé  ', '  PAULO', 'Catarina  ']) == 'José'
+
+def test_03():
+    assert menor_nome(['Bárbara', 'JOSÉ  ', 'Bill']) == 'José'

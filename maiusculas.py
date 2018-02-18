@@ -22,3 +22,18 @@ maiusculas('Programamos em Python 3.')
 maiusculas('PrOgRaMaMoS em python!')
 # deve devolver 'PORMMS'
 '''
+def maiusculas(frase):
+    string = ''
+    for caracter in frase:
+        if ord(caracter) >=65 and ord(caracter) <= 90:
+            string += caracter
+    return string
+
+def test_01():
+    assert maiusculas('Programamos em python 2?') =='P'
+    
+def test_02():
+    assert maiusculas('Programamos em Python 3.') == 'PP'
+    
+def test_03():
+    assert maiusculas('PrOgRaMaMoS em python!') == 'PORMMS'
