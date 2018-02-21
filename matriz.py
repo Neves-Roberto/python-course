@@ -12,3 +12,5 @@ def cria_matriz(num_linhas, num_colunas):
 
     return matriz
 print(cria_matriz(2,3))
+
+cria_matriz()

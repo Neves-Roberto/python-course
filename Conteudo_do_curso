@@ -83,3 +83,11 @@ for i in range(ini, fim, passo):# determina o inicio
 e fim com passo
 
 for i in lista:# percorre toda a lista
+
+variavel especial para script
+
+if __name__ == '__main__':
+verifica se a variavel __name__ do codigo foi executado com
+script pos esta variavel vale __main__
+caso contrario retorna o nome do modulo
+
