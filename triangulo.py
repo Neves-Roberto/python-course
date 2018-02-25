@@ -22,11 +22,30 @@ class Triangulo:
     def retangulo(self):
         from math import sqrt
         triangulo = [self.a, self.b, self.c]
-        triangulo = triangulo.sort
-        
-        ca, co = triangulo[0], triangulo[1]
+        triangulo = sorted(triangulo)
+
+        ca = triangulo[0]
+        co = triangulo[1]
         hipotenusa = sqrt(ca ** 2 + co ** 2)
         if hipotenusa == triangulo[2]:
             return True
         else:
             return False
+
+    def semelhantes(self, triangulo):
+        # criando lista com os valores do triangulo 1
+        triangulo_1 = [self.a, self.b, self.c]
+        triangulo_1 = sorted(triangulo_1)
+        # criando lista com os valores do triangulo 2
+        triangulo_2 = [triangulo.a, triangulo.b, triangulo.c]
+        triangulo_2 = sorted(triangulo_2)
+        soma_triangulo_1 = sum(triangulo_1)
+        soma_triangulo_2 = sum(triangulo_2)
+        if (soma_triangulo_2 >= soma_triangulo_1) and (soma_triangulo_2 % soma_triangulo_1 == 0):
+            return True
+        elif (soma_triangulo_1 >= soma_triangulo_2) and (soma_triangulo_1 % soma_triangulo_2 == 0):
+            return True
+        else:
+            return False
+        
+            
