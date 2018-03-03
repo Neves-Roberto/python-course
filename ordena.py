@@ -1,4 +1,4 @@
-def selecao_direta(lista):
+def ordena(lista):
     fim = len(lista)
     for i in range(fim-1):
         pos_menor = i
@@ -8,8 +8,8 @@ def selecao_direta(lista):
         lista[i],lista[pos_menor] = lista[pos_menor],lista[i]
     return lista
 
-def main():
-    numeros = [55,33,0,900,-432,10,77,2,11]
-    print(selecao_direta(numeros))
+#def main():
+#    numeros = [55,33,0,900,-432,10,77,2,11]
+#    print(selecao_direta(numeros))
 
-main()
+#main()
