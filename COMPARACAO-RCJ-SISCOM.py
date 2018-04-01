@@ -1,4 +1,46 @@
 import re # biblioteca de expressoes regulares
+import glob, os, datetime
+import math
+from math import trunc
+
+def ler_xls():
+    from xlrd import open_workbook
+
+    xls = open_workbook('Envio_SAN_27_03_2018.xls')
+    
+    for sheets in xls.sheets():
+        list1 = []
+        for rows in range(sheets.nrows):
+            list1.append(str(sheets.cell(rows, 1).value))
+
+    list2 = []
+    for item in list1:
+        
+        if not (item == 'CÓD MAT' or item == ''):
+            
+            list2.append(trunc(float(item)))
+
+    return list2
+
+
+def lista_arquivo_filtro_data(lista_de_arquivos,patch,data):
+    
+    print('lista de arquivos compativeis com a data ', data)
+    lista = []
+    for item in lista_de_arquivos:
+        if extrai_data_arquivo(patch + item) == data:
+            lista.append(item)
+    return lista
+
+
+def extrai_data_arquivo(nome_arquivo):
+    info_arquivo = os.stat(nome_arquivo)
+    return str(datetime.datetime.fromtimestamp(info_arquivo.st_mtime).date())
+
+# gera uma lista com os arquivos de interesse
+def listar_arquivos(patch,extensao):
+    os.chdir(patch)
+    return glob.glob('*.' + extensao)
 
 # baseado na lista de codigos de material
 def remove_repetidos(lista):
@@ -67,11 +109,23 @@ def main():
     arquivo1 = open('LISTA_RCJ.TXT','r')
     arquivo2 = open('LISTA_SISCOM.TXT','r')
     arquivo_out = open('COMPARACAO-RCJ-SISCOM.txt','w')
+    patch1 = "C:/Users/dkscr/Downloads/compara_rcj_siscom-20180328T214602Z-001/compara_rcj_siscom/rcj/"
+    patch2 = "C:/Users/dkscr/Downloads/compara_rcj_siscom-20180328T214602Z-001/compara_rcj_siscom/siscom/"
+    extensao = 'mxf'
 
     # Criando lista para manipulacao
-    lista_do_arquivo_1 = cria_lista(arquivo1)
-    lista_do_arquivo_2 = cria_lista(arquivo2)
-    
+    #lista_do_arquivo_1 = cria_lista(arquivo1)
+    #lista_do_arquivo_2 = cria_lista(arquivo2)
+    lista_do_arquivo_1 = listar_arquivos(patch1,extensao)
+    lista_do_arquivo_2 = listar_arquivos(patch2,extensao)
+    print(ler_xls())
+
+    #checar data
+    #data = '2018-03-29'
+    data = input('Digite a data no formato AAAA-MM-DD : ')
+    lista_do_arquivo_1_filtrada = lista_arquivo_filtro_data(lista_do_arquivo_1,patch1,data)
+    lista_do_arquivo_1 = lista_do_arquivo_1_filtrada[:]
+
     
     # Criando listas somente com o codigo de material, pois este eh unico
     codigos_arquivo_1 = extrai_codigo_material(lista_do_arquivo_1)
@@ -110,5 +164,6 @@ def main():
     arquivo1.close()
     arquivo2.close()
     arquivo_out.close()
+    a = input("PRESIONE PARA ENCERRAR!")
 
 main()#chamada de funcao principal
