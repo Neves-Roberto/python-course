@@ -188,18 +188,24 @@ def GerarPaginaCorpo(iten,AtivarLinha,DesativaLinha):
         print("            <td>{0}</td>".format(iten))
 
         if DesativaLinha:
-            # fechando a tabela e a pagina
+            # fechando a linha
             pagina.write('''
-                    < / tr >
-                    < / table >
-                    < / body >
-                    < / html > ''')
-            print('''< / tr >
-                < / table >
-                < / body >
-                < / html > ''')
-
+                    </tr>''')
+            print('''</tr>''')
             pagina.close()
+
+def GerarPaginaFim():
+    with open('teste.html', "a") as pagina:
+        pagina.write('''
+                  </table>
+                  </body>
+                </html> ''')
+        print('''
+
+                        </table>
+                        </body>
+                        </html> ''')
+        pagina.close()
 
 
 
@@ -209,7 +215,7 @@ def GerarPaginaCorpo(iten,AtivarLinha,DesativaLinha):
 
 def GerarListaMateriais(Materiais=[]):
     GerarPaginaEstrutura()
-    ListaMateriais = GetMateriais(dataDe='2018-12-03', cdMateriais=Materiais)
+    ListaMateriais = GetMateriais(dataDe='2018-11-29', cdMateriais=Materiais)
     # print(type(ListaMateriais))
 
     QuantidadeMateriais = len(ListaMateriais)
@@ -274,6 +280,7 @@ def GerarListaMateriais(Materiais=[]):
                 DesativaLinha = True
 
                 print()
+    GerarPaginaFim()
 
                 #return(iten,QuantidadeMateriais)
     # print("Processo de Download")
@@ -321,4 +328,4 @@ def GerarListaMateriais(Materiais=[]):
 # print(request_enderecos.text)
 # print(enderecos_json['enderecos'][0])
 # Materiais = ['169309']
-GerarListaMateriais()
+GerarListaMateriais(Materiais = ['169309','169307','169306'])
