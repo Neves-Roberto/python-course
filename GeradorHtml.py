@@ -86,3 +86,12 @@ def GerarPaginaFim():
 
 
 GerarPaginaEstrutura()
+ativa = True
+desativa = False
+for i in range(9):
+    for i in range(9):
+        GerarPaginaCorpo(i,ativa,desativa)
+        ativa = False
+    ativa = True
+
+GerarPaginaFim()

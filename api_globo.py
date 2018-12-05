@@ -123,7 +123,7 @@ def DownloadMaterial(idMaterial, nomeArquivo, md5):
 
 def GerarPaginaEstrutura():
     #TODO montar função de gera arquivo html contendo conteudo da pagina equivalente da consulta realizada
-    itens = ('idMaterial', 'ptoVenda', 'codMaterial', 'player', 'dataEnvio', 'titulo', 'statusDownload', 'nomeArquivo', 'md5')
+    itens = ('id-Material', 'ptoVenda', 'codMaterial', 'player', 'dataEnvio', 'titulo', 'statusDownload', 'nomeArquivo', 'md5','endereco')
 
     with open('teste.html', "w") as pagina:
         pagina.write('''<!DOCTYPE html>
@@ -140,7 +140,7 @@ def GerarPaginaEstrutura():
         </style>
             </head>
                 <body>
-                <h1> The HTML style tag </h1>
+                <h1> LISTA MATERIAIS OPEC - API GLOBO </h1>
                 <table>
                 <colgroup span=3></colgroup>
                 <tr>
@@ -221,8 +221,8 @@ def GerarListaMateriais(Materiais=[]):
     QuantidadeMateriais = len(ListaMateriais)
     # print(ListaMateriais)
     # print(QuantidadeMateriais)
-    AtivarLinha = True
-    DesativaLinha = False
+    Ativar = True
+    Desativar= False
     for listaMaterial in ListaMateriais:
         QuantidadeMateriais = QuantidadeMateriais - 1
         # print(listaMaterial)
@@ -235,7 +235,8 @@ def GerarListaMateriais(Materiais=[]):
         for iten in ('idMaterial', 'ptoVenda', 'codMaterial', 'player', 'dataEnvio', 'titulo', 'statusDownload', 'nomeArquivo','md5'):
             #espacoPadrao = 2
             # 1 espaço
-            GerarPaginaCorpo(listaMaterial[iten], AtivarLinha, DesativaLinha)
+            GerarPaginaCorpo(listaMaterial[iten], AtivarLinha = Ativar, DesativaLinha = Desativar)
+            Ativar = False
             if iten == 'idMaterial':
                 print(" ", end='')
                 print(listaMaterial[iten], end=" | ")
@@ -272,15 +273,20 @@ def GerarListaMateriais(Materiais=[]):
                 print(" ", end='')
                 print(listaMaterial[iten], end="| ")
                 # time.sleep(3)
-                #try:
-                    #print(GetEnderecos(idMateriais=str(listaMaterial['idMaterial']))['enderecos'][0])
-                #except:
-                    #print("Não foi possivel obter a URL de Download")
-                print(QuantidadeMateriais, end="")
-                DesativaLinha = True
+                try:
+                    url = GetEnderecos(idMateriais=str(listaMaterial['idMaterial']))['enderecos'][0]
+                    print(url)
+                    GerarPaginaCorpo("<a href=" + url + ">"+ listaMaterial['nomeArquivo'] + "</a>", AtivarLinha=Ativar, DesativaLinha=Desativar)
+                except:
+                    print("Não foi possivel obter a URL de Download")
+                    GerarPaginaCorpo("Não foi possivel obter a URL de Download", AtivarLinha=Ativar,DesativaLinha=Desativar)
+                #print(QuantidadeMateriais, end="")
+                #Desativar = True
 
                 print()
+        Ativar = True
     GerarPaginaFim()
+
 
                 #return(iten,QuantidadeMateriais)
     # print("Processo de Download")
@@ -328,4 +334,4 @@ def GerarListaMateriais(Materiais=[]):
 # print(request_enderecos.text)
 # print(enderecos_json['enderecos'][0])
 # Materiais = ['169309']
-GerarListaMateriais(Materiais = ['169309','169307','169306'])
+GerarListaMateriais(Materiais = ['169309'])
