@@ -1,13 +1,12 @@
 import requests
 import json
-from datetime import date
+from datetime import datetime
 import hashlib
-import ssl
-import time
 
-ssl._create_default_https_context = ssl._create_unverified_context
 
-hoje = date.today()
+hoje = datetime.now()
+
+
 hoje_formatado = str(hoje.year) + '-' + str(hoje.month) + '-' + str(hoje.day)
 grant_type = 'password'
 username = 'entregadigital.api'
@@ -123,9 +122,10 @@ def DownloadMaterial(idMaterial, nomeArquivo, md5):
 
 def GerarPaginaEstrutura():
     #TODO montar função de gera arquivo html contendo conteudo da pagina equivalente da consulta realizada
-    itens = ('id-Material', 'ptoVenda', 'codMaterial', 'player', 'dataEnvio', 'titulo', 'statusDownload', 'nomeArquivo', 'md5','endereco')
+    itens = ('ID_MATERIAL', 'PTO_VENDA', 'COD_MATERIAL', 'PLAYER', 'DATA_ENVIO', 'TITULO', 'STATUS_DOWNLOAD', 'NOME_ARQUIVO', 'MD5','URL_DOWNLOAD')
 
     with open('teste.html', "w") as pagina:
+        hora_atual = hoje_formatado + ' ' + str(hoje.hour) + ':' + str(hoje.minute) + ':' + str(hoje.second)
         pagina.write('''<!DOCTYPE html>
         <html>
         <head>
@@ -136,11 +136,16 @@ def GerarPaginaEstrutura():
         colgroup {background:#F60;}
         .coluna1 {background:#F66;}
         .coluna2  {background:#F33;}
-        .coluna3  {background:#F99;}
+        .coluna4  {background:#F99;}
+        .coluna5  {background:#F99;}
+        .coluna6  {background:#F99;}
+        .coluna7  {background:#F99;}
+        .coluna8  {background:#F99;}
         </style>
             </head>
                 <body>
                 <h1> LISTA MATERIAIS OPEC - API GLOBO </h1>
+                <h3>Ultima atualização ''' + hora_atual + '''</h3>
                 <table>
                 <colgroup span=3></colgroup>
                 <tr>
@@ -160,6 +165,7 @@ def GerarPaginaEstrutura():
             </head>
                 <body>
                 <h1> LISTA MATERIAIS OPEC - API GLOBO </h1>
+                <h3>Ultima atualização ''' + hora_atual + '''</h3>
                 <table>
                 <colgroup span=3></colgroup>
                 <tr>
@@ -208,14 +214,10 @@ def GerarPaginaFim():
         pagina.close()
 
 
-
-
-
-
-
 def GerarListaMateriais(Materiais=[]):
     GerarPaginaEstrutura()
-    ListaMateriais = GetMateriais(dataDe='2018-11-29', cdMateriais=Materiais)
+    #dataDe='2018-11-29'
+    ListaMateriais = GetMateriais(cdMateriais=Materiais)
     # print(type(ListaMateriais))
 
     QuantidadeMateriais = len(ListaMateriais)
@@ -235,6 +237,7 @@ def GerarListaMateriais(Materiais=[]):
         for iten in ('idMaterial', 'ptoVenda', 'codMaterial', 'player', 'dataEnvio', 'titulo', 'statusDownload', 'nomeArquivo','md5'):
             #espacoPadrao = 2
             # 1 espaço
+            print(listaMaterial[iten])
             GerarPaginaCorpo(listaMaterial[iten], AtivarLinha = Ativar, DesativaLinha = Desativar)
             Ativar = False
             if iten == 'idMaterial':
@@ -333,5 +336,10 @@ def GerarListaMateriais(Materiais=[]):
 # print(request_enderecos.status_code)
 # print(request_enderecos.text)
 # print(enderecos_json['enderecos'][0])
-# Materiais = ['169309']
-GerarListaMateriais(Materiais = ['169309'])
+# Materiais = ['143435']
+#DataInicio = str(input("Digite a data de inicio [AAAA-MM-DD] [OPCIONAL]"))
+#DataFim = str(input("Digite a data de fim [AAAA-MM-DD] [OPCIONAL]"))
+#CodigoMaterial = [str(input("Digite o Codigo de Material separado por virgula: "))]
+#print(type(DataInicio),type(DataFim),type(CodigoMaterial))
+#DataInicio,DataFim,
+#GerarListaMateriais()
