@@ -20,17 +20,17 @@ class Application:
         self.quartoContainer["pady"] = 20
         self.quartoContainer.pack()
 
-        self.titulo = Label(self.primeiroContainer, text="Consulta codigo de material")
+        self.titulo = Label(self.primeiroContainer, text="CONSULTA ")
         self.titulo["font"] = ("Arial", "10", "bold")
         self.titulo.pack()
 
-        self.nomeLabel = Label(self.segundoContainer, text="Código de Material", font=self.fontePadrao)
-        self.nomeLabel.pack(side=LEFT)
+        self.cdMaterialLabel = Label(self.segundoContainer, text="Código de Material", font=self.fontePadrao)
+        self.cdMaterialLabel.pack(side=LEFT)
 
-        self.nome = Entry(self.segundoContainer)
-        self.nome["width"] = 30
-        self.nome["font"] = self.fontePadrao
-        self.nome.pack(side=LEFT)
+        self.cdMaterialInput = Entry(self.segundoContainer)
+        self.cdMaterialInput["width"] = 30
+        self.cdMaterialInput["font"] = self.fontePadrao
+        self.cdMaterialInput.pack(side=LEFT)
 
         #self.senhaLabel = Label(self.terceiroContainer, text="Senha", font=self.fontePadrao)
         #self.senhaLabel.pack(side=LEFT)
@@ -54,7 +54,7 @@ class Application:
     # Método verificar senha
     def verificaSenha(self):
 
-        usuario = self.nome.get()
+        usuario = self.cdMaterialInput.get()
         #senha = self.senha.get()
         api_globo.GerarListaMateriais(str(usuario).split(','))
 
