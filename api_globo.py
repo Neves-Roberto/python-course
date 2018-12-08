@@ -301,9 +301,8 @@ def GerarListaMateriais(datade,dataate,Materiais):
 
                 print()
         Ativar = True
-
         status_api = "EM ANDAMENTO..."
-        GerarPaginaFim()
+    GerarPaginaFim()
     status_api = "TERMNADO"
     #Consulta_cdMaterial.Application.status. = "TERMNADO"
 
