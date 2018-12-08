@@ -2,8 +2,10 @@ import requests
 import json
 from datetime import datetime
 import hashlib
+#import Consulta_cdMaterial
+#from Consulta_cdMaterial import Application as app
 
-
+status_api = "STATUS"
 hoje = datetime.now()
 
 
@@ -32,7 +34,7 @@ def GetToken(grant_type='password', username='entregadigital.api', password='Tri
     return (token, tipo_token)
 
 
-def GetMateriais(destino='SAN', idPlayers='1,2,3,4', statusDownload='', dataDe=hoje_formatado, dataAte=hoje_formatado,
+def GetMateriais(destino='SAN', idPlayers='1,2,3,4', statusDownload='', dataDe=[], dataAte=[],
                  idRequisicao='1', cdMateriais=[]):
     # destino padrao SAN [{"mnemonico":"SAN","nome":"SAN"}]
     # id dos servidores [{"id":1,"nome":"ADSTREAM"},{"id":2,"nome":"ADTOOX"},{"id":3,"nome":"VATI"},{"id":4,"nome":"ZARPA"}]
@@ -44,14 +46,20 @@ def GetMateriais(destino='SAN', idPlayers='1,2,3,4', statusDownload='', dataDe=h
     token, tipo_token = GetToken()
 
     url_materiais = 'https://api.tvglobo.com.br/integradorgmid/api/rest/v3/materiais-cloud?'
-    dados_materiais = {'destino': destino, 'idPlayers': idPlayers, 'statusDownload': statusDownload, 'dataDe': dataDe,
-                       'dataAte': dataAte, 'cdMateriais[]': cdMateriais}
+    if cdMateriais == ['']:
+        dados_materiais = {'destino': destino, 'idPlayers': idPlayers, 'statusDownload': statusDownload,'dataDe': dataDe,'dataAte': dataAte}
+    else:
+        dados_materiais = {'destino': destino, 'idPlayers': idPlayers, 'statusDownload': statusDownload, 'dataDe': dataDe,'dataAte': dataAte, 'cdMateriais[]': cdMateriais}
+
     # dados_materiais = {'destino':destino,'idPlayers':idPlayers,'statusDownload':statusDownload,'codMaterial':codMaterial}
     dados_headers = {'accept': 'application/json', 'idRequisicao': idRequisicao,
                      'authorization': tipo_token + ' ' + token}
+    print(dataDe)
+    print(dataAte)
+    print(cdMateriais)
 
     request_materiais = requests.get(url=url_materiais, params=dados_materiais, headers=dados_headers)
-    # print(request_materiais.url)
+    print(request_materiais.url)
     materiais_json = json.loads(request_materiais.text)
     # retorna um Json com a lista de materiais
     # TODO fazer verificação de resposta do retorno, se é 200 para liberar a resposta em json, caso contrario retornar -1
@@ -214,10 +222,15 @@ def GerarPaginaFim():
         pagina.close()
 
 
-def GerarListaMateriais(Materiais=[]):
+def GerarListaMateriais(datade,dataate,Materiais):
+    print(datade)
+    print(dataate)
+    print(Materiais)
+    global status_api
+
     GerarPaginaEstrutura()
     #dataDe='2018-11-29'
-    ListaMateriais = GetMateriais(cdMateriais=Materiais)
+    ListaMateriais = GetMateriais(dataDe=datade,dataAte=dataate,cdMateriais=Materiais)
     # print(type(ListaMateriais))
 
     QuantidadeMateriais = len(ListaMateriais)
@@ -288,7 +301,11 @@ def GerarListaMateriais(Materiais=[]):
 
                 print()
         Ativar = True
-    GerarPaginaFim()
+
+        status_api = "EM ANDAMENTO..."
+        GerarPaginaFim()
+    status_api = "TERMNADO"
+    #Consulta_cdMaterial.Application.status. = "TERMNADO"
 
 
                 #return(iten,QuantidadeMateriais)
