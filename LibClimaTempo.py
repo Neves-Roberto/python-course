@@ -50,7 +50,7 @@ def extrai_campos_importantes_arquivo(json_id, diretorio, dicionario):
     arquivo_json = open(cidade_json, 'rt')
     teste = json.loads(arquivo_json.readlines()[0])
     arquivo_json.close()
-    return (teste['name'], ceil(teste['data']['temperature']), teste['data']['icon'])
+    return (teste['name'], ceil(teste['data']['temperature']), teste['data']['icon'],teste['data']['humidity'],teste['data']['condition'])
 
 
 def construir_planilha(diretorio,nomeArquivo):

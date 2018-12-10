@@ -6,6 +6,7 @@ import LibClimaTempo as clima
 import time
 import xlrd
 from xlutils.copy import copy
+import Gerador_html_clima_tempo
 # --------------------------------
 
 token0 = '1f463bfbf867d593ece336c22636eb9e'
@@ -123,6 +124,8 @@ for copia in range(5):
 print("Atualizando Planilha")
 workbook_edit.save(diretorio_planilha + 'clima_tempo_python.xls')
 time.sleep(5)
+print("Atualizando pagina de monitoração")
+Gerador_html_clima_tempo.main()
 
 
 # TODO:
