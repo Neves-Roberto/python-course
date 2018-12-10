@@ -179,7 +179,6 @@ def main(lista_ids_cidades=lista_ids_cidades):
     time.sleep(5)
 
 
-main()
-
+#main()
 # TODO:
 # TODO:
