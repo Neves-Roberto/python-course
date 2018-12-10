@@ -1,4 +1,4 @@
-from CLIMA_TEMPO_OK import lista_ids_cidades,extrai_campos_importantes_arquivo
+from LibClimaTempo import lista_ids_cidades,extrai_campos_importantes_arquivo,dicionario_ids_cidades,diretorio_json
 
 with open('climatempo_monitor.html', "w") as pagina:
     pagina.write('''
@@ -234,9 +234,9 @@ with open('climatempo_monitor.html', "a") as pagina:
     for id_cidade in lista_ids_cidades:
         numeroJanela += 1
         pagina.write('''<section class="janela{0}">\n'''.format(numeroJanela))
-        pagina.write('<p>{0}</p>\n'.format(str(extrai_campos_importantes_arquivo(id_cidade)[0]).upper()))
-        pagina.write('''<p>Temperatura {0}</p>\n'''.format(extrai_campos_importantes_arquivo(id_cidade)[1]))
-        pagina.write('''<p><img src="C:\\Users\\dkscr\\Downloads\\realistic\\realistic\\128px\\{0}.png"></p>\n'''.format(extrai_campos_importantes_arquivo(id_cidade)[2]))
+        pagina.write('<p>{0}</p>\n'.format(str(extrai_campos_importantes_arquivo(id_cidade,diretorio_json,dicionario_ids_cidades)[0]).upper()))
+        pagina.write('''<p>Temperatura {0}</p>\n'''.format(extrai_campos_importantes_arquivo(id_cidade,diretorio_json,dicionario_ids_cidades)[1]))
+        pagina.write('''<p><img src="C:\\Users\\dkscr\\Downloads\\realistic\\realistic\\128px\\{0}.png"></p>\n'''.format(extrai_campos_importantes_arquivo(id_cidade,diretorio_json,dicionario_ids_cidades)[2]))
         pagina.write("</section>\n")
 
 pagina.close()
