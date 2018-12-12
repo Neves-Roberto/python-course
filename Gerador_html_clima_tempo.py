@@ -50,6 +50,8 @@ def main():
                             }
                             img {
                                 align-content:stretch;
+                                width: 70px;    /* largura da imagem */
+                                height: 70px;   /*  altura da imagem  */
                             }
                             
                             section {
@@ -246,7 +248,7 @@ def main():
             pagina.write('''<p>Temperatura {0}</p>\n'''.format(extrai_campos_importantes_arquivo(id_cidade,diretorio_json,dicionario_ids_cidades)[1]))
             pagina.write('''<p>Humidade {0}</p>\n'''.format(extrai_campos_importantes_arquivo(id_cidade, diretorio_json, dicionario_ids_cidades)[3]))
             pagina.write('''<p>Condição {0}</p>\n'''.format(extrai_campos_importantes_arquivo(id_cidade, diretorio_json, dicionario_ids_cidades)[4]))
-            pagina.write('''<p><img src="C:\\Users\\dkscr\\Downloads\\realistic\\realistic\\70px\\{0}.png"></p>\n'''.format(extrai_campos_importantes_arquivo(id_cidade,diretorio_json,dicionario_ids_cidades)[2]))
+            pagina.write('''<p><img src="file:///C:/Users/dkscr/Downloads/realistic/realistic/70px/{0}.png"></p>\n'''.format(extrai_campos_importantes_arquivo(id_cidade,diretorio_json,dicionario_ids_cidades)[2]))
             pagina.write("</section>\n")
 
     pagina.close()

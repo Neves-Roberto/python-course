@@ -37,7 +37,7 @@ dicionario_traduz_icones = {'1': 'S', '1n': 'L', '2': 'SN', '2n': 'LN', '2r': 'S
                             '5': 'NC', '5n': 'NC', '6': 'NCR', '6n': 'NCR', '7': 'NC', '7n': 'NC', '8': 'NC',
                             '8n': 'NC', '9': 'SN', '9n': 'LN'}
 
-dicionario_converte_copia = {0: 0, 1: 29, 2: 58, 3: 87, 4: 116}
+dicionario_converte_copia = {0: 0, 1: 29, 2: 58, 3: 87, 4: 116, 5:145}
 # --------------------------------
 # programa principal
 # path
