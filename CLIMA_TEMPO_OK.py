@@ -8,10 +8,10 @@ import xlrd
 from xlutils.copy import copy
 import Gerador_html_clima_tempo
 # --------------------------------
-
-token0 = '1f463bfbf867d593ece336c22636eb9e'
-token1 = '812ccc8c0b88c1feb866ca74b55b2116'
-token2 = '1136491898bd00d3ef40c103414152c0'
+token0 = 'fe028fd71ec9e3dde761ab29b3d977fd' # token projetos.tvtribuna.com
+#token0 = '1f463bfbf867d593ece336c22636eb9e'
+#token1 = '812ccc8c0b88c1feb866ca74b55b2116'
+#token2 = '1136491898bd00d3ef40c103414152c0'
 # --------------------------------
 #diretorio_json = "Z:\json\"
 #diretorio_planilha = "Z:\clima_tempo_python\"
@@ -32,8 +32,8 @@ dicionario_ids_cidades = {3675: "Santos", 3589: "Praia Grande", 3697: "Mongaguá
                           4078: "Eldorado", 3852: "Jacupiranga", 3754: "Pariquera-Açu", 4301: "Apiaí",
                           4364: "Barra do Chapéu", 3829: "Itapirapuã Paulista", 3619: "Ribeira", 3824: "Itaóca",
                           4365: "Barra do Turvo", 3814: "Iporanga"}
-dicionario_traduz_icones = {'1': 'S', '1n': 'L', '2': 'SN', '2n': 'LN', '2r': 'SN', '2rN': 'LN', '3': 'NC', '3n': 'NC',
-                            '3TM': 'N', '4': 'SNC', '4n': 'LNC', '4r': 'SNC', '4rN': 'LNC', '4t': 'SNCR', '4tn': 'LNCR',
+dicionario_traduz_icones = {'1': 'S', '1n': 'L', '2': 'SN', '2n': 'LN', '2r': 'SN', '2rn': 'LN', '3': 'NC', '3n': 'NC',
+                            '3tm': 'N','3tmn': 'N', '4': 'SNC', '4n': 'LNC', '4r': 'SNC', '4rn': 'LNC', '4t': 'SNCR', '4tn': 'LNCR',
                             '5': 'NC', '5n': 'NC', '6': 'NCR', '6n': 'NCR', '7': 'NC', '7n': 'NC', '8': 'NC',
                             '8n': 'NC', '9': 'SN', '9n': 'LN'}
 
@@ -60,8 +60,8 @@ for copia in range(5):
     json_clima_tempo = "erro"
     for i in lista_ids_cidades[0:10]:
 
-        json_clima_tempo = clima.req_clima_tempo(i, token2)
-        if (json_clima_tempo != "erro" or i == 0):
+        json_clima_tempo = clima.req_clima_tempo(i, token0)
+        if (json_clima_tempo != "erro" and copia == 0):
             dados_importantes = clima.extrai_campos_importantes(json_clima_tempo,diretorio_json)
 
         else:
@@ -82,8 +82,8 @@ for copia in range(5):
         w_sheet.write(indice - 1, 3, dicionario_traduz_icones[dados_importantes[2]] + extensao)
 
     for i in lista_ids_cidades[10:20]:
-        json_clima_tempo = clima.req_clima_tempo(i, token1)
-        if (json_clima_tempo != "erro" or i == 0):
+        json_clima_tempo = clima.req_clima_tempo(i, token0)
+        if (json_clima_tempo != "erro" and copia == 0):
             dados_importantes = clima.extrai_campos_importantes(json_clima_tempo,diretorio_json)
 
         else:
@@ -103,7 +103,7 @@ for copia in range(5):
 
     for i in lista_ids_cidades[20:]:
         json_clima_tempo = clima.req_clima_tempo(i, token0)
-        if (json_clima_tempo != "erro" or i == 0):
+        if (json_clima_tempo != "erro" and copia == 0):
             dados_importantes = clima.extrai_campos_importantes(json_clima_tempo,diretorio_json)
 
         else:
