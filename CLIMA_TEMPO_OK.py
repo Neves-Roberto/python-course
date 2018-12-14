@@ -1,6 +1,6 @@
 # Objetivo: coleta de temperatura e cidada via api do clima tempo
 #
-# version:1.3
+# version:1.4
 # --------------------------------
 import LibClimaTempo as clima
 import time
@@ -44,7 +44,7 @@ dicionario_converte_copia = {0: 0, 1: 29, 2: 58, 3: 87, 4: 116, 5:145}
 
 extensao = ".png"
 graus = "º"
-print("Versão 1.3")
+print("Versão 1.4")
 time.sleep(2)
 # TODO: VERIFICAR SE A PLANILHA EXISTE, CASO CONTRARIO CRIAR PLANILHA COM A FUNÇÃO construir_planilha()
 
@@ -69,7 +69,7 @@ for copia in range(5):
             dados_importantes = clima.extrai_campos_importantes(json_clima_tempo,diretorio_json)
 
         else:
-            print("Excedeu o limite do dia")
+            print("----->>>>Excedeu o limite do dia<<<<-----")
             dados_importantes = clima.extrai_campos_importantes_arquivo(i,diretorio_json,dicionario_ids_cidades)
 
         print(
@@ -79,7 +79,7 @@ for copia in range(5):
         # indice representa a linha da planilha
         indice = lista_ids_cidades.index(i) + 2 + dicionario_converte_copia[copia]
 
-        print(indice)
+        print("Linha da planilha {0}".format(indice))
         w_sheet.write(indice - 1, 0, dados_importantes[0])
         w_sheet.write(indice - 1, 1, str(dados_importantes[1]) + graus)
         w_sheet.write(indice - 1, 2, caminho_icones + dados_importantes[2] + extensao)
@@ -95,7 +95,7 @@ for copia in range(5):
             dados_importantes = clima.extrai_campos_importantes(json_clima_tempo,diretorio_json)
 
         else:
-            print("Excedeu o limite do dia")
+            print("----->>>>Excedeu o limite do dia<<<<-----")
             dados_importantes = clima.extrai_campos_importantes_arquivo(i,diretorio_json,dicionario_ids_cidades)
 
         print(
@@ -103,7 +103,7 @@ for copia in range(5):
                                                             caminho_icones + dados_importantes[2] + extensao))
         # GRAVANDO CONTEUDO NA PLANILHA
         indice = lista_ids_cidades.index(i) + 2 + dicionario_converte_copia[copia]
-        print(indice)
+        print("Linha da planilha {0}".format(indice))
         w_sheet.write(indice - 1, 0, dados_importantes[0])
         w_sheet.write(indice - 1, 1, str(dados_importantes[1]) + graus)
         w_sheet.write(indice - 1, 2, caminho_icones + dados_importantes[2] + extensao)
@@ -119,7 +119,7 @@ for copia in range(5):
             dados_importantes = clima.extrai_campos_importantes(json_clima_tempo,diretorio_json)
 
         else:
-            print("Excedeu o limite do dia")
+            print("----->>>>Excedeu o limite do dia<<<<-----")
             dados_importantes = clima.extrai_campos_importantes_arquivo(i,diretorio_json,dicionario_ids_cidades)
 
         print(
@@ -127,7 +127,7 @@ for copia in range(5):
                                                             caminho_icones + dados_importantes[2] + extensao))
         # GRAVANDO CONTEUDO NA PLANILHA
         indice = lista_ids_cidades.index(i) + 2 + dicionario_converte_copia[copia]
-        print(indice)
+        print("Linha da planilha {0}".format(indice))
         w_sheet.write(indice - 1, 0, dados_importantes[0])
         w_sheet.write(indice - 1, 1, str(dados_importantes[1]) + graus)
         w_sheet.write(indice - 1, 2, caminho_icones + dados_importantes[2] + extensao)
