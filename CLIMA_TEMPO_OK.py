@@ -60,7 +60,11 @@ for copia in range(5):
     json_clima_tempo = "erro"
     for i in lista_ids_cidades[0:10]:
 
-        json_clima_tempo = clima.req_clima_tempo(i, token0)
+        if copia == 0:
+            json_clima_tempo = clima.req_clima_tempo(i, token0)
+        else:
+            json_clima_tempo = "erro"
+
         if (json_clima_tempo != "erro" and copia == 0):
             dados_importantes = clima.extrai_campos_importantes(json_clima_tempo,diretorio_json)
 
@@ -82,7 +86,11 @@ for copia in range(5):
         w_sheet.write(indice - 1, 3, dicionario_traduz_icones[dados_importantes[2]] + extensao)
 
     for i in lista_ids_cidades[10:20]:
-        json_clima_tempo = clima.req_clima_tempo(i, token0)
+        if copia == 0:
+            json_clima_tempo = clima.req_clima_tempo(i, token0)
+        else:
+            json_clima_tempo = "erro"
+
         if (json_clima_tempo != "erro" and copia == 0):
             dados_importantes = clima.extrai_campos_importantes(json_clima_tempo,diretorio_json)
 
@@ -102,7 +110,11 @@ for copia in range(5):
         w_sheet.write(indice - 1, 3, dicionario_traduz_icones[dados_importantes[2]] + extensao)
 
     for i in lista_ids_cidades[20:]:
-        json_clima_tempo = clima.req_clima_tempo(i, token0)
+        if copia == 0:
+            json_clima_tempo = clima.req_clima_tempo(i, token0)
+        else:
+            json_clima_tempo = "erro"
+
         if (json_clima_tempo != "erro" and copia == 0):
             dados_importantes = clima.extrai_campos_importantes(json_clima_tempo,diretorio_json)
 
