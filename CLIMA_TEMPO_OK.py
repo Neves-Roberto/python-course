@@ -1,4 +1,4 @@
-# Objetivo: coleta de temperatura e cidada via api do clima tempo
+﻿# Objetivo: coleta de temperatura e cidada via api do clima tempo
 #
 # version:1.4
 # --------------------------------
@@ -23,15 +23,8 @@ diretorio_planilha = ""
 caminho_icones = ""
 
 # --------------------------------
-lista_ids_cidades = [3675, 3589, 3697, 3823, 3771, 3484, 4047, 4234, 4374, 3608, 3837, 3767, 3880, 3960, 4451, 4272,
-                     4460, 4274, 3492, 4078, 3852, 3754, 4301, 4364, 3829, 3619, 3824, 4365, 3814]
-dicionario_ids_cidades = {3675: "Santos", 3589: "Praia Grande", 3697: "Mongaguá", 3823: "Itanhaém", 3771: "Peruíbe",
-                          3484: "São Vicente", 4047: "Cubatão", 4234: "Guarujá", 4374: "Bertioga", 3608: "Registro",
-                          3837: "Itariri", 3767: "Pedro de Toledo", 3880: "Juquiá", 3960: "Miracatu", 4451: "Cajati",
-                          4272: "Iguape", 4460: "Cananéia", 4274: "Ilha Comprida", 3492: "Sete Barras",
-                          4078: "Eldorado", 3852: "Jacupiranga", 3754: "Pariquera-Açu", 4301: "Apiaí",
-                          4364: "Barra do Chapéu", 3829: "Itapirapuã Paulista", 3619: "Ribeira", 3824: "Itaóca",
-                          4365: "Barra do Turvo", 3814: "Iporanga"}
+lista_ids_cidades = [3675, 3484, 3589,4234,4047, 3697, 4374, 3823, 4078,3771,3837,3960,3880,3608, 4272,3492, 4274,3754,3852,4451, 4460,3814,4365,4301,3824,4364,3619,3829]
+dicionario_ids_cidades = {3675: "Santos", 3484: "São Vicente", 3589: "Praia Grande",4234: "Guarujá", 4047: "Cubatão", 3697: "Mongaguá", 4374: "Bertioga", 3823: "Itanhaém", 4078: "Eldorado",3771: "Peruíbe",3837: "Itariri",3767: "Pedro de Toledo",3960: "Miracatu",3880: "Juquiá",3608: "Registro", 4272: "Iguape",3492: "Sete Barras", 4274: "Ilha Comprida",3754: "Pariquera-Açu",3852: "Jacupiranga",4451: "Cajati", 4460: "Cananéia",3814: "Iporanga",4365: "Barra do Turvo",4301: "Apiaí",3824: "Itaóca",4364: "Barra do Chapéu", 3619: "Ribeira",3829: "Itapirapuã Paulista" }
 dicionario_traduz_icones = {'1': 'S', '1n': 'L', '2': 'SN', '2n': 'LN', '2r': 'SN', '2rn': 'LN', '3': 'NC', '3n': 'NC',
                             '3tm': 'N','3tmn': 'N', '4': 'SNC', '4n': 'LNC', '4r': 'SNC', '4rn': 'LNC', '4t': 'SNCR', '4tn': 'LNCR',
                             '5': 'NC', '5n': 'NC', '6': 'NCR', '6n': 'NCR', '7': 'NC', '7n': 'NC', '8': 'NC',
