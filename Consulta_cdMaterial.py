@@ -102,6 +102,6 @@ class Application:
 
 root = Tk()
 root.title("OPEC TRIBUNA - CONSULTA API GLOBO V 0.1 BETA")
-root.iconbitmap(r'api_globo.ico')
+#root.iconbitmap(r'api_globo.ico')
 Application(root)
 root.mainloop()
