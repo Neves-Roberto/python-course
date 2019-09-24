@@ -3,38 +3,6 @@ import api_globo_poo
 import wget
 import hashlib
 
-class Avo:
-
-    '''
-    Classe mestre para a hierarquia das outras classes
-    criar atributos e metodos referente a classe mestre
-    '''
-
-    def __init__(self):
-        print('iniciado o construtor de Avo')
-        self.familia = 'jordao'
-        self.cor_olhos = 'azul'
-
-    def getCorOlhos(self):
-        print('A cor dos olhos é ' + self.cor_olhos)
-
-    def setCorOlhos(self,novaCorOlhos):
-        self.cor_olhos = novaCorOlhos
-
-class Pai(Avo):
-
-    def __init__(self):
-        Avo.__init__(self)
-        #self.cor_olhos = 'verde'
-        print('iniciado o construtor de Pai')
-
-
-class Filho(Pai):
-
-    def __init__(self):
-        Pai.__init__(self)
-        #self.cor_olhos = 'azul-esverdeado'
-        print('iniciado o construtor de Filho')
 
 def insereListaOk(idMaterial):
     pass
@@ -43,7 +11,8 @@ def insereListaNaoOk(idMaterial):
     pass
 
 #path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\mxf\\'
-path = 'Y:\\SISCOM\\siscom_Teste\\'
+#path = 'Y:\\SISCOM\\siscom_Teste\\'
+path = ''
 
 opec = api_globo_poo.apiGlobo()
 
@@ -61,7 +30,7 @@ for material in opec.GetMateriais(cdMateriais=[]):
 
     try:
         print('Baixando ' + nomeMaterial)
-        filename = wget.download(url, path)
+        filename = wget.download(url, path + nomeMaterial)
         #TODO:ATUALIZAR UMA LISTA DE ARQUIVOS JA BAIXADOS E OK
     except:
         print('Falha ao fazer donwload do arquivo ' + nomeMaterial)
