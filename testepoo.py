@@ -4,6 +4,7 @@ import wget
 import hashlib
 import dateutil.relativedelta
 import datetime
+import requests
 
 def insereListaOk(idMaterial):
     pass
@@ -11,6 +12,15 @@ def insereListaOk(idMaterial):
 def insereListaNaoOk(idMaterial):
     pass
 
+def baixar_arquivo_alternativo(url, endereco):
+    resposta = requests.get(url, stream=True, verify=False) #AQUI
+    if resposta.status_code == requests.codes.OK:
+        with open(endereco, 'wb') as novo_arquivo:
+                for parte in resposta.iter_content(chunk_size=256): #AQUI TBM
+                    novo_arquivo.write(parte)
+        print("Download finalizado. Arquivo salvo em: {}".format(endereco))
+    else:
+        resposta.raise_for_status()
 
 #path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\mxf\\'
 #path = 'Y:\\SISCOM\\siscom_Teste\\'
@@ -20,68 +30,134 @@ path = ''
 
 #wget.download('https://a5.adstream.com/globo/api/materiais/5d3b5012b9fc6651dee0fe98-RJP/download?IDRequisicao=126072019181100&access_token=83c5d7b0291f8ea783e40118d21684adaa4e5913','teste.mxf', bar=bar_custom)
 
-data_de = datetime.datetime.strptime(str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month) + '-' + str(datetime.datetime.now().day), "%Y-%m-%d")
-novo_data_de = data_de - dateutil.relativedelta.relativedelta(days=0) # Quantidade de dias da atualizacao
-data = str(novo_data_de.year) + "-" + str(novo_data_de.month) + "-" + str(novo_data_de.day)
+contador_tentativas = 0
+while contador_tentativas <= 3:
 
+    contador_tentativas +=1
 
+    opec = api_globo_poo.apiGlobo()
 
-opec = api_globo_poo.apiGlobo()
-
-
-
-for material in opec.GetMateriais(dataDe=[data]):
-    print(material)
-    nomeMaterial = material['nomeArquivo'].replace(' ','_') # retira os espacos do nome do arquivo, substitui por underline
-    #print(material['codMaterial'])
-    md5_original = material['md5']
-    #print(str(material['codMaterial']))
-
-    def bar_custom(current, total, width=80):
-        print("Downloading: %d%% [%d / %d] bytes" % (current / total * 100, current, total))
-
-
+    lista_ok = []
+    #Atualizando a lista_ok baseado no arquivo listadownload_ok.txt
     try:
-        print('Iniciando o download do arquivo ' + nomeMaterial)
-        url = str(opec.GetEnderecos('1',str(material['idMaterial']))['enderecos'][0])
+        arq_lista_ok = open(path + 'listadownload_ok.txt', 'r')
+        for linha in arq_lista_ok:
+            lista_ok.append(int(linha.replace('\n', '')))
+        print("lista de arquivos ok!")
+        print(lista_ok)
+        arq_lista_ok.close()
     except:
-        print('Falha em obter o endereco do arquivo ' + nomeMaterial)
-
+        print('Problema ao ler o arquivo download ok!')
+    lista_nao_ok = []
+    # Atualizando a lista_nao_ok baseado no arquivo listadownload_bad.txt
     try:
-        print('Baixando ' + nomeMaterial)
-        print(url)
-        wget.download(url, path + nomeMaterial)
-
-        #Insere na lista de donwloads ok
-        arquivo_donwload = open(path + 'listadownload_ok.txt','a+')
-        arquivo_donwload.write(str(material['codMaterial'])+ '\n')
-        arquivo_donwload.close()
-
-        #TODO:ATUALIZAR UMA LISTA DE ARQUIVOS JA BAIXADOS E OK
+        arq_lista_nao_ok = open(path + 'listadownload_bad.txt', 'r')
+        for linha in arq_lista_nao_ok:
+            lista_nao_ok.append(int(linha.replace('\n', '')))
+        print('Lista de arquivos bad!')
+        print(lista_nao_ok)
+        arq_lista_nao_ok.close()
+        #limpando o arquivo listadownload_bad.txt para atualizacao dentro do bloco de checagem de download
+        arq_lista_nao_ok = open(path + 'listadownload_bad.txt', 'w')
+        arq_lista_nao_ok.close()
     except:
-        print('Falha ao fazer donwload do arquivo ' + nomeMaterial)
+        print("Problema o ler o arquivo de download bad!")
+    #TODO: apagar o arquivo para nova lista ser gerada
 
-        #Insere na lista de arquivos com problema no download
-        arquivo_donwload = open(path + 'listadownload_bad.txt','a+')
-        arquivo_donwload.write(str(material['codMaterial'])+ '\n')
-        arquivo_donwload.close()
+    data_de = datetime.datetime.strptime(str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month) + '-' + str(datetime.datetime.now().day), "%Y-%m-%d")
+    novo_data_de = data_de - dateutil.relativedelta.relativedelta(days=0)
+    data = str(novo_data_de.year) + "-" + str(novo_data_de.month) + "-" + str(novo_data_de.day)
 
-        #TODO: TRANSFERIR PARA UMA LISTA/ARQUIVO COM OS MATERIAIS COM PROBLEMAS
+    #TODO:VERIFICAR MATERIAL DA CASA VATICANO, O QUE FALTA PARA COMPLETAR O ENDERECO, POIS NÃO FAZ DOWNLOAD
 
-    try:
-        arquivo = open(path + nomeMaterial, 'rb').read()
-        md5_arquivo = hashlib.md5(arquivo)
-        md5_final = md5_arquivo.hexdigest()
-    except:
-        print('Não foi possivel chevar a intergridade do arquivo ' + nomeMaterial)
-        md5_final = ''
 
-    if md5_original == md5_final:
-        print('ARQUIVO INTEGRO')
-        print(md5_final)
-    else:
-        print('ARQUIVO COM PROBLEMA')
+    #obtendo lista atualizada do siscom
+    lista_material_opec = opec.GetMateriais(dataDe=[data],cdMateriais=[])
 
-    print()
+    #listando e comparando com lista existente
+
+    lista_nova_tentativa = []
+    for material in lista_material_opec:
+
+
+
+        if material['codMaterial'] in lista_ok:
+            print(str(material['codMaterial']) + " EXISTE " )
+        else:
+            # adicionar na lista de nova tentativa de download
+            lista_nova_tentativa.append(material['codMaterial'])
+            print(str(material['codMaterial']) + " NAO EXISTE ")
+
+
+    lista_material_opec = opec.GetMateriais(dataDe=[data],cdMateriais=[lista_nova_tentativa])
+    for material in lista_material_opec:
+        print(material)
+        nomeMaterial = material['nomeArquivo'].replace(' ','_') # retira os espacos do nome do arquivo, substitui por underline
+        #print(material['codMaterial'])
+        md5_original = material['md5']
+        #print(str(material['codMaterial']))
+
+        try:
+            print('Iniciando o download do arquivo ' + nomeMaterial)
+            url = str(opec.GetEnderecos('1',str(material['idMaterial']))['enderecos'][0])
+        except:
+            print('Falha em obter o endereco do arquivo ' + nomeMaterial)
+
+        if material['player'] == 'VATI':
+            try:
+
+                print('Baixando ' + nomeMaterial)
+                print(url)
+                baixar_arquivo_alternativo(url,path + nomeMaterial)
+                #Insere na lista de donwloads ok
+                arquivo_donwload = open(path + 'listadownload_ok.txt','a+')
+                arquivo_donwload.write(str(material['codMaterial'])+ '\n')
+                arquivo_donwload.close()
+                #Iniciar download alternativo
+            except:
+                print('Falha ao fazer donwload do arquivo ' + nomeMaterial)
+                #Insere na lista de arquivos com problema no download
+                arquivo_donwload = open(path + 'listadownload_bad.txt','a+')
+                arquivo_donwload.write(str(material['codMaterial'])+ '\n')
+                arquivo_donwload.close()
+
+        else:
+            #Bloco de download padrao
+            try:
+                print('Baixando ' + nomeMaterial)
+                print(url)
+                wget.download(url, path + nomeMaterial)
+
+                #Insere na lista de donwloads ok
+                arquivo_donwload = open(path + 'listadownload_ok.txt','a+')
+                arquivo_donwload.write(str(material['codMaterial'])+ '\n')
+                arquivo_donwload.close()
+
+                #TODO:ATUALIZAR UMA LISTA DE ARQUIVOS JA BAIXADOS E OK
+            except:
+                print('Falha ao fazer donwload do arquivo ' + nomeMaterial)
+
+                #Insere na lista de arquivos com problema no download
+                arquivo_donwload = open(path + 'listadownload_bad.txt','a+')
+                arquivo_donwload.write(str(material['codMaterial'])+ '\n')
+                arquivo_donwload.close()
+
+                #TODO: TRANSFERIR PARA UMA LISTA/ARQUIVO COM OS MATERIAIS COM PROBLEMAS
+
+        try:
+            arquivo = open(path + nomeMaterial, 'rb').read()
+            md5_arquivo = hashlib.md5(arquivo)
+            md5_final = md5_arquivo.hexdigest()
+        except:
+            print('Não foi possivel chevar a intergridade do arquivo ' + nomeMaterial)
+            md5_final = ''
+
+        if md5_original == md5_final:
+            print('ARQUIVO INTEGRO')
+            print(md5_final)
+        else:
+            print('ARQUIVO COM PROBLEMA')
+
+        print()
 
 
