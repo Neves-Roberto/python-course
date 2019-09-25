@@ -5,12 +5,8 @@ import hashlib
 import dateutil.relativedelta
 import datetime
 import requests
+import time
 
-def insereListaOk(idMaterial):
-    pass
-
-def insereListaNaoOk(idMaterial):
-    pass
 
 def baixar_arquivo_alternativo(url, endereco):
     resposta = requests.get(url, stream=True, verify=False) #AQUI
@@ -23,17 +19,14 @@ def baixar_arquivo_alternativo(url, endereco):
         resposta.raise_for_status()
 
 #path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\mxf\\'
-#path = 'Y:\\SISCOM\\siscom_Teste\\'
-path = ''
+path = 'Y:\\SISCOM\\'
+#path = ''
 
-
-
-#wget.download('https://a5.adstream.com/globo/api/materiais/5d3b5012b9fc6651dee0fe98-RJP/download?IDRequisicao=126072019181100&access_token=83c5d7b0291f8ea783e40118d21684adaa4e5913','teste.mxf', bar=bar_custom)
 
 contador_tentativas = 0
 while contador_tentativas <= 3:
 
-    contador_tentativas +=1
+    contador_tentativas =1
 
     opec = api_globo_poo.apiGlobo()
 
@@ -43,7 +36,7 @@ while contador_tentativas <= 3:
         arq_lista_ok = open(path + 'listadownload_ok.txt', 'r')
         for linha in arq_lista_ok:
             lista_ok.append(int(linha.replace('\n', '')))
-        print("lista de arquivos ok!")
+        print("LISTA DE MATERIAL JA BAIXADO E OK!")
         print(lista_ok)
         arq_lista_ok.close()
     except:
@@ -54,14 +47,14 @@ while contador_tentativas <= 3:
         arq_lista_nao_ok = open(path + 'listadownload_bad.txt', 'r')
         for linha in arq_lista_nao_ok:
             lista_nao_ok.append(int(linha.replace('\n', '')))
-        print('Lista de arquivos bad!')
+        print('LISTA DE MATERIAL BAD!')
         print(lista_nao_ok)
         arq_lista_nao_ok.close()
         #limpando o arquivo listadownload_bad.txt para atualizacao dentro do bloco de checagem de download
         arq_lista_nao_ok = open(path + 'listadownload_bad.txt', 'w')
         arq_lista_nao_ok.close()
     except:
-        print("Problema o ler o arquivo de download bad!")
+        print("Problema ao ler o arquivo de download bad!")
     #TODO: apagar o arquivo para nova lista ser gerada
 
     data_de = datetime.datetime.strptime(str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month) + '-' + str(datetime.datetime.now().day), "%Y-%m-%d")
@@ -77,25 +70,29 @@ while contador_tentativas <= 3:
     #listando e comparando com lista existente
 
     lista_nova_tentativa = []
+    print('contudo da lista nova tentativa')
+    print(lista_nova_tentativa)
     for material in lista_material_opec:
 
-
-
         if material['codMaterial'] in lista_ok:
-            print(str(material['codMaterial']) + " EXISTE " )
+            print(str(material['codMaterial']) + " CODIGO DE MATERIAL JA EXISTE ")
         else:
             # adicionar na lista de nova tentativa de download
             lista_nova_tentativa.append(material['codMaterial'])
-            print(str(material['codMaterial']) + " NAO EXISTE ")
+            print(str(material['codMaterial']) + " CODIGO DE MATERIAL NAO EXISTE - NOVA TENTATIVA ")
+
 
 
     lista_material_opec = opec.GetMateriais(dataDe=[data],cdMateriais=[lista_nova_tentativa])
+
+    if not lista_nova_tentativa:
+        lista_material_opec.clear() # Limpando a lista de download quando nao nescessita de tentativas
+
     for material in lista_material_opec:
         print(material)
         nomeMaterial = material['nomeArquivo'].replace(' ','_') # retira os espacos do nome do arquivo, substitui por underline
-        #print(material['codMaterial'])
         md5_original = material['md5']
-        #print(str(material['codMaterial']))
+
 
         try:
             print('Iniciando o download do arquivo ' + nomeMaterial)
@@ -103,9 +100,10 @@ while contador_tentativas <= 3:
         except:
             print('Falha em obter o endereco do arquivo ' + nomeMaterial)
 
-        if material['player'] == 'VATI':
+        if material['player'] == 'VATI':# Caso de servidor com requisicao de certificado
             try:
 
+                # Iniciar download alternativo
                 print('Baixando ' + nomeMaterial)
                 print(url)
                 baixar_arquivo_alternativo(url,path + nomeMaterial)
@@ -113,8 +111,10 @@ while contador_tentativas <= 3:
                 arquivo_donwload = open(path + 'listadownload_ok.txt','a+')
                 arquivo_donwload.write(str(material['codMaterial'])+ '\n')
                 arquivo_donwload.close()
-                #Iniciar download alternativo
+
+
             except:
+
                 print('Falha ao fazer donwload do arquivo ' + nomeMaterial)
                 #Insere na lista de arquivos com problema no download
                 arquivo_donwload = open(path + 'listadownload_bad.txt','a+')
@@ -133,7 +133,6 @@ while contador_tentativas <= 3:
                 arquivo_donwload.write(str(material['codMaterial'])+ '\n')
                 arquivo_donwload.close()
 
-                #TODO:ATUALIZAR UMA LISTA DE ARQUIVOS JA BAIXADOS E OK
             except:
                 print('Falha ao fazer donwload do arquivo ' + nomeMaterial)
 
@@ -142,7 +141,6 @@ while contador_tentativas <= 3:
                 arquivo_donwload.write(str(material['codMaterial'])+ '\n')
                 arquivo_donwload.close()
 
-                #TODO: TRANSFERIR PARA UMA LISTA/ARQUIVO COM OS MATERIAIS COM PROBLEMAS
 
         try:
             arquivo = open(path + nomeMaterial, 'rb').read()
@@ -158,6 +156,7 @@ while contador_tentativas <= 3:
         else:
             print('ARQUIVO COM PROBLEMA')
 
-        print()
+
+    time.sleep(120)
 
 

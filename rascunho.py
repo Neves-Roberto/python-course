@@ -47,7 +47,7 @@ for num, material in lista_material_opec:
         print(str(num) + ' ' + str(material['codMaterial']) + " NAO EXISTE ")
 
 '''
-
+'''
 #wget.download(url)
 #https://gw.casavaticano.com.br/index.php/materialEnderecos/1084210?access_token=b0yAKp1xwoxDbHy7fbUIlC9gh1KI6nSY1VQocvht
 id = '440211'
@@ -71,3 +71,5 @@ arquivo_log.write('Efetuando Autenticação - {0}\n'.format(datetime.now()))
 r = subprocess.call(
     "curl --cacert cacert.pem -L --cookie ./somefile \"https://tvs.climatempo.com.br/download?t=c2F0ZWxsaXRl&r=YnI=\" --output PREVISAO_DO_DIA\satbra.GIF",
     shell=False)
+'''
+
