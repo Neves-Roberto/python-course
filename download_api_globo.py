@@ -176,7 +176,7 @@ class PythonCornerExample(SMWinservice):
 
 #_______________________________________________________________________
 if __name__ == '__main__':
-    PythonCornerExample.parse_command_line()
+    download_api_globo.parse_command_line()
 
 # pip install pywin32
 
