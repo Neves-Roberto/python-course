@@ -1,12 +1,18 @@
-#criancao de classes em poo e heranca
 import api_globo_poo
 import wget
 import hashlib
 import dateutil.relativedelta
 import datetime
 import requests
-import time
+import time,os,re
 
+def lista_arquivos(diretorio,extensao='mxf'):
+    pattern = '^\d+'
+    pasta = diretorio# diretorio onde localiza os arquivos .extensao
+    caminhos = [os.path.join(pasta, nome) for nome in os.listdir(pasta)]
+    arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
+    lista_arquivos_extensao = [re.findall(pattern,arq.replace(path,''))[0] for arq in arquivos if arq.lower().endswith(extensao.lower())]  # lista com todos os arquivos .extensao no diretorio
+    return lista_arquivos_extensao
 
 def baixar_arquivo_alternativo(url, endereco):
     resposta = requests.get(url, stream=True, verify=False) #AQUI
@@ -14,13 +20,14 @@ def baixar_arquivo_alternativo(url, endereco):
         with open(endereco, 'wb') as novo_arquivo:
                 for parte in resposta.iter_content(chunk_size=256): #AQUI TBM
                     novo_arquivo.write(parte)
-        print("Download finalizado. Arquivo salvo em: {}".format(endereco))
+        #print("Download finalizado. Arquivo salvo em: {}".format(endereco))
     else:
         resposta.raise_for_status()
 
 #path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\mxf\\'
-path = 'Y:\\SISCOM\\'
-#path = ''
+#path = 'Y:\\SISCOM\\'
+path = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\SISCOM\\'
+path_api = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\ARQUIVOS_API_GLOBO\\'
 
 
 contador_tentativas = 0
@@ -31,9 +38,17 @@ while contador_tentativas <= 3:
     opec = api_globo_poo.apiGlobo()
 
     lista_ok = []
+    #atualizando lista baseado na pasta
+    arq_lista_ok = open(path_api + 'listadownload_ok.txt', 'w')
+    arq_lista_ok.close
+    arq_lista_ok = open(path_api + 'listadownload_ok.txt', 'a+')
+    for lista_diretorio in lista_arquivos(path):
+        arq_lista_ok.write(lista_diretorio + '\n')
+    arq_lista_ok.close
+
     #Atualizando a lista_ok baseado no arquivo listadownload_ok.txt
     try:
-        arq_lista_ok = open(path + 'listadownload_ok.txt', 'r')
+        arq_lista_ok = open(path_api + 'listadownload_ok.txt', 'r')
         for linha in arq_lista_ok:
             lista_ok.append(int(linha.replace('\n', '')))
         print("LISTA DE MATERIAL JA BAIXADO E OK!")
@@ -44,21 +59,21 @@ while contador_tentativas <= 3:
     lista_nao_ok = []
     # Atualizando a lista_nao_ok baseado no arquivo listadownload_bad.txt
     try:
-        arq_lista_nao_ok = open(path + 'listadownload_bad.txt', 'r')
+        arq_lista_nao_ok = open(path_api + 'listadownload_bad.txt', 'r')
         for linha in arq_lista_nao_ok:
             lista_nao_ok.append(int(linha.replace('\n', '')))
         print('LISTA DE MATERIAL BAD!')
         print(lista_nao_ok)
         arq_lista_nao_ok.close()
         #limpando o arquivo listadownload_bad.txt para atualizacao dentro do bloco de checagem de download
-        arq_lista_nao_ok = open(path + 'listadownload_bad.txt', 'w')
+        arq_lista_nao_ok = open(path_api + 'listadownload_bad.txt', 'w')
         arq_lista_nao_ok.close()
     except:
         print("Problema ao ler o arquivo de download bad!")
     #TODO: apagar o arquivo para nova lista ser gerada
 
     data_de = datetime.datetime.strptime(str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month) + '-' + str(datetime.datetime.now().day), "%Y-%m-%d")
-    novo_data_de = data_de - dateutil.relativedelta.relativedelta(days=0)
+    novo_data_de = data_de - dateutil.relativedelta.relativedelta(days=1)
     data = str(novo_data_de.year) + "-" + str(novo_data_de.month) + "-" + str(novo_data_de.day)
 
     #TODO:VERIFICAR MATERIAL DA CASA VATICANO, O QUE FALTA PARA COMPLETAR O ENDERECO, POIS NÃO FAZ DOWNLOAD
@@ -108,18 +123,37 @@ while contador_tentativas <= 3:
                 print(url)
                 baixar_arquivo_alternativo(url,path + nomeMaterial)
                 #Insere na lista de donwloads ok
-                arquivo_donwload = open(path + 'listadownload_ok.txt','a+')
+                arquivo_donwload = open(path_api + 'listadownload_ok.txt','a')
                 arquivo_donwload.write(str(material['codMaterial'])+ '\n')
                 arquivo_donwload.close()
 
+                # inserir dados no log
+                arquivo_log = open(path_api + 'log_download_api.txt','a')
+                data_log = datetime.datetime.strptime(
+                    str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
+                        datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
+                        datetime.datetime.now().minute) + '-' + str(datetime.datetime.now().second),
+                    "%d-%m-%Y-%H-%M-%S")
+                arquivo_log.write(str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' EFETUADO DOWNLOAD ALTERNATIVO DO ARQUIVO ' + nomeMaterial + '\n')
+                arquivo_log.close()
 
             except:
 
                 print('Falha ao fazer donwload do arquivo ' + nomeMaterial)
                 #Insere na lista de arquivos com problema no download
-                arquivo_donwload = open(path + 'listadownload_bad.txt','a+')
+                arquivo_donwload = open(path_api + 'listadownload_bad.txt','a+')
                 arquivo_donwload.write(str(material['codMaterial'])+ '\n')
                 arquivo_donwload.close()
+                # inserir dados no log
+                arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+                data_log = datetime.datetime.strptime(
+                    str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
+                        datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
+                        datetime.datetime.now().minute) + '-' + str(datetime.datetime.now().second),
+                    "%d-%m-%Y-%H-%M-%S")
+
+                arquivo_log.write(str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' FALHA NO DOWNLOAD ALTERNATIVO DO ARQUIVO ' + nomeMaterial + '\n')
+                arquivo_log.close()
 
         else:
             #Bloco de download padrao
@@ -129,17 +163,39 @@ while contador_tentativas <= 3:
                 wget.download(url, path + nomeMaterial)
 
                 #Insere na lista de donwloads ok
-                arquivo_donwload = open(path + 'listadownload_ok.txt','a+')
+                arquivo_donwload = open(path_api + 'listadownload_ok.txt','a+')
                 arquivo_donwload.write(str(material['codMaterial'])+ '\n')
                 arquivo_donwload.close()
+
+                # inserir dados no log
+                arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+                data_log = datetime.datetime.strptime(
+                    str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
+                        datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
+                        datetime.datetime.now().minute) + '-' + str(datetime.datetime.now().second),
+                    "%d-%m-%Y-%H-%M-%S")
+
+                arquivo_log.write(str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' EFETUADO DOWNLOAD DO ARQUIVO ' + nomeMaterial + '\n')
+                arquivo_log.close()
 
             except:
                 print('Falha ao fazer donwload do arquivo ' + nomeMaterial)
 
                 #Insere na lista de arquivos com problema no download
-                arquivo_donwload = open(path + 'listadownload_bad.txt','a+')
+                arquivo_donwload = open(path_api + 'listadownload_bad.txt','a+')
                 arquivo_donwload.write(str(material['codMaterial'])+ '\n')
                 arquivo_donwload.close()
+
+                # inserir dados no log
+                arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+                data_log = datetime.datetime.strptime(
+                    str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
+                        datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
+                        datetime.datetime.now().minute) + '-' + str(datetime.datetime.now().second),
+                    "%d-%m-%Y-%H-%M-%S")
+
+                arquivo_log.write(str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' FALHA NO DOWNLOAD ARQUIVO ' + nomeMaterial + '\n')
+                arquivo_log.close()
 
 
         try:
@@ -153,8 +209,33 @@ while contador_tentativas <= 3:
         if md5_original == md5_final:
             print('ARQUIVO INTEGRO')
             print(md5_final)
+            # inserir dados no log
+            arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+            data_log = datetime.datetime.strptime(
+                str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
+                    datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
+                    datetime.datetime.now().minute) + '-' + str(datetime.datetime.now().second),
+                "%d-%m-%Y-%H-%M-%S")
+
+            arquivo_log.write(str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' VERIFICADO HASH DO ARQUIVO ' + nomeMaterial + ' HASH ORIGINAL ' + md5_original + ' HASH VERIFICADO ' + md5_final + '\n')
+            arquivo_log.close()
         else:
             print('ARQUIVO COM PROBLEMA')
+            # inserir dados no log
+            arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+            data_log = datetime.datetime.strptime(
+                str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
+                    datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
+                    datetime.datetime.now().minute) + '-' + str(datetime.datetime.now().second),
+                "%d-%m-%Y-%H-%M-%S")
+
+            arquivo_log.write(str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' DIVERGENCIA DE HASH DO ARQUIVO ' + nomeMaterial + ' HASH ORIGINAL ' + md5_original + ' HASH VERIFICADO ' + md5_final + '\n')
+            try:
+                arquivo_log.write('DELETANDO O ARQUIVO ' + nomeMaterial + ' ' + str(material['codMaterial']) + '\n')
+            except:
+                arquivo_log.write('NAO FOI POSSIVEL DELETAR O ARQUIVO ' + nomeMaterial + ' ' + str(material['codMaterial']) + '\n')
+
+            arquivo_log.close()
 
 
     time.sleep(120)

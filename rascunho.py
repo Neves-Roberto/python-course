@@ -5,6 +5,7 @@ import wget
 import hashlib
 import requests
 import subprocess
+import os,re
 dict = {'idMaterial': 337773, 'idMaterialParceiro': '1213654', 'ptoVenda': 'PES', 'codMaterial': 254057, 'cliente': 'TRE', 'idPlayer': 4, 'player': 'ZARPA', 'dataEnvio': '2019-03-29', 'primeiraVeiculacao': '24/09/2019 FATI', 'titulo': 'BIOMETRIA N1 - SP', 'duracao': 30, 'statusDownload': 'emAndamento', 'exibidoras': ['SAN'], 'nomeArquivo': '254057_BIOMETRIA N1 - SP.MXF', 'tamArquivo': 281.11142, 'md5': '1b47958bc24ab4e773df954e5dcf8c27'}
 '''
 print(dict['idMaterial'])
@@ -72,4 +73,36 @@ r = subprocess.call(
     "curl --cacert cacert.pem -L --cookie ./somefile \"https://tvs.climatempo.com.br/download?t=c2F0ZWxsaXRl&r=YnI=\" --output PREVISAO_DO_DIA\satbra.GIF",
     shell=False)
 '''
+"""lista_material_opec = opec.GetMateriais(dataDe=['2019-09-26'], cdMateriais=['386114'])
+
+for material in lista_material_opec:
+    data_log = datetime.datetime.strptime(str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(datetime.datetime.now().minute) + '-' + str(datetime.datetime.now().second),"%d-%m-%Y-%H-%M-%S")
+    print(type(str(material['codMaterial'])))
+    print(str(data_log)  + " CODIGO " + str(material['codMaterial']))
+
+print('Abrindo arquivo de log')
+arquivo_log = open(path_api + 'log_download_api.txt', 'a')
+print(path_api + 'log_download_api.txt')
+data_log = datetime.datetime.strptime(
+    str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
+        datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
+        datetime.datetime.now().minute) + '-' + str(datetime.datetime.now().second),
+    "%d-%m-%Y-%H-%M-%S")
+arquivo_log.write(str(data_log) + ' CODIGO ' + material[
+    'codMaterial'] + ' EFETUADO DOWNLOAD ALTERNATIVO DO ARQUIVO ' + nomeMaterial + '\n')
+arquivo_log.close()
+print('Arquivo fechado log')"""
+
+path = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\SISCOM\\'
+extensao = 'mxf'
+def lista_arquivos(diretorio,extensao):
+    pattern = '^\d+'
+    pasta = diretorio# diretorio onde localiza os arquivos .extensao
+    caminhos = [os.path.join(pasta, nome) for nome in os.listdir(pasta)]
+    arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
+    lista_arquivos_extensao = [re.findall(pattern,arq.replace(path,''))[0] for arq in arquivos if arq.lower().endswith(extensao.lower())]  # lista com todos os arquivos .extensao no diretorio
+    return lista_arquivos_extensao
+
+print(lista_arquivos(path,extensao))
+
 
