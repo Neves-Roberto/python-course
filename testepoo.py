@@ -6,6 +6,41 @@ import datetime
 import requests
 import time,os,re
 import json
+import smtplib
+from email.mime.text import MIMEText
+
+# conexão com os servidores do google
+smtp_ssl_host = 'smtp.gmail.com'
+smtp_ssl_port = 465
+# username ou email para logar no servidor
+username = 'projetos.tvtribuna@gmail.com'
+password = ''#digitar a senha no servidor
+
+from_addr = 'projetos.tvtribuna@gmail.com'
+to_addrs = ['flavio.santos@tvtribuna.com','dkscript@gmail.com']#lista de emails
+
+# a biblioteca email possuí vários templates
+# para diferentes formatos de mensagem
+# neste caso usaremos MIMEText para enviar
+# somente texto
+"""message = MIMEText('Hello World')
+message['subject'] = 'Hello'
+message['from'] = from_addr
+message['to'] = ', '.join(to_addrs)"""
+
+server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
+
+"""# conectaremos de forma segura usando SSL
+server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
+# para interagir com um servidor externo precisaremos
+# fazer login nele
+server.login(username, password)
+server.sendmail(from_addr, to_addrs, message.as_string())
+server.quit()
+"""
+
+
+
 
 def lista_arquivos(diretorio,extensao='mxf'):
     pattern = '^\d+'
@@ -30,6 +65,14 @@ def baixar_arquivo_alternativo(url, endereco):
 path = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\SISCOM\\'
 path_api = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\ARQUIVOS_API_GLOBO\\'
 
+mensagem = 'Iniciado o download_api_globo'
+message = MIMEText(mensagem)
+message['subject'] = 'START DOWNLOAD_API_GLOBO' # assunto
+message['from'] = from_addr
+message['to'] = ', '.join(to_addrs)
+server.login(username, password)
+server.sendmail(from_addr, to_addrs, message.as_string())
+server.quit()
 
 
 
@@ -62,7 +105,7 @@ while contador_tentativas <= 3:
         DIAS = int(config_json['DIAS'])
         TDLY = int(config_json['TDLY'])
 
-    print("Qauntidade de dias " + str(DIAS))
+    print("Quantidade de dias " + str(DIAS))
     print("Tempo de delay " + str(TDLY))
 
     contador_tentativas =1
@@ -248,9 +291,20 @@ while contador_tentativas <= 3:
                     datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
                     datetime.datetime.now().minute) + '-' + str(datetime.datetime.now().second),
                 "%d-%m-%Y-%H-%M-%S")
+            mensagem = str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' VERIFICADO MD5 DO ARQUIVO ' + nomeMaterial + ' MD5 ORIGINAL ' + md5_original + ' MD5 VERIFICADO ' + md5_final + '\n'
 
-            arquivo_log.write(str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' VERIFICADO MD5 DO ARQUIVO ' + nomeMaterial + ' MD5 ORIGINAL ' + md5_original + ' MD5 VERIFICADO ' + md5_final + '\n')
+            arquivo_log.write(mensagem)
             arquivo_log.close()
+
+            mensagem = 'DOWNLOAD CONCLUIDO\n' + mensagem
+            message = MIMEText(mensagem)
+            message['subject'] = 'DOWNLOAD CONCLUIDO ' + nomeMaterial  # assunto
+            message['from'] = from_addr
+            message['to'] = ', '.join(to_addrs)
+            server.connect(smtp_ssl_host,smtp_ssl_port)
+            server.login(username, password)
+            server.sendmail(from_addr, to_addrs, message.as_string())
+            server.quit()
         else:
             print('\nARQUIVO COM PROBLEMA')
             # inserir dados no log
@@ -260,11 +314,31 @@ while contador_tentativas <= 3:
                     datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
                     datetime.datetime.now().minute) + '-' + str(datetime.datetime.now().second),
                 "%d-%m-%Y-%H-%M-%S")
+            mensagem = str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' DIVERGENCIA MD5 DO ARQUIVO ' + nomeMaterial + ' MD5 ORIGINAL ' + md5_original + ' MD5 VERIFICADO ' + md5_final + '\n'
 
-            arquivo_log.write(str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' DIVERGENCIA MD5 DO ARQUIVO ' + nomeMaterial + ' MD5 ORIGINAL ' + md5_original + ' MD5 VERIFICADO ' + md5_final + '\n')
+            arquivo_log.write(mensagem)
+            #conteudo da mensagem de email
+            message = MIMEText(mensagem)
+            message['subject'] = 'DIVERGENCIA DE NO ARQUIVO ' + nomeMaterial#assunto
+            message['from'] = from_addr
+            message['to'] = ', '.join(to_addrs)
+            server.connect(smtp_ssl_host, smtp_ssl_port)
+            server.login(username, password)
+            server.sendmail(from_addr, to_addrs, message.as_string())
+            server.quit()
             try:
                 os.remove(path + nomeMaterial)
-                arquivo_log.write('DELETANDO O ARQUIVO ' + nomeMaterial + ' ' + str(material['codMaterial']) + '\n')
+                mensagem = 'DELETANDO O ARQUIVO ' + nomeMaterial + ' ' + str(material['codMaterial']) + '\n'
+                arquivo_log.write(mensagem)
+                # conteudo da mensagem de email
+                message = MIMEText(mensagem)
+                message['subject'] = 'DELETANDO O ARQUIVO ' + nomeMaterial  # assunto
+                message['from'] = from_addr
+                message['to'] = ', '.join(to_addrs)
+                server.connect(smtp_ssl_host, smtp_ssl_port)
+                server.login(username, password)
+                server.sendmail(from_addr, to_addrs, message.as_string())
+                server.quit()
             except:
                 arquivo_log.write('NAO FOI POSSIVEL DELETAR O ARQUIVO ' + nomeMaterial + ' ' + str(material['codMaterial']) + '\n')
 
