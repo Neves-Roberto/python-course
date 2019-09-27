@@ -93,7 +93,7 @@ arquivo_log.write(str(data_log) + ' CODIGO ' + material[
 arquivo_log.close()
 print('Arquivo fechado log')"""
 
-path = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\SISCOM\\'
+"""path = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\SISCOM\\'
 extensao = 'mxf'
 def lista_arquivos(diretorio,extensao):
     pattern = '^\d+'
@@ -103,6 +103,6 @@ def lista_arquivos(diretorio,extensao):
     lista_arquivos_extensao = [re.findall(pattern,arq.replace(path,''))[0] for arq in arquivos if arq.lower().endswith(extensao.lower())]  # lista com todos os arquivos .extensao no diretorio
     return lista_arquivos_extensao
 
-print(lista_arquivos(path,extensao))
+print(lista_arquivos(path,extensao))"""
 
-
+print("{\"DIAS\": 1, \"TDLY\": 120 }\n")

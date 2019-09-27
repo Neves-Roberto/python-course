@@ -5,6 +5,7 @@ import dateutil.relativedelta
 import datetime
 import requests
 import time,os,re
+import json
 
 def lista_arquivos(diretorio,extensao='mxf'):
     pattern = '^\d+'
@@ -30,8 +31,39 @@ path = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\SISCOM\\'
 path_api = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\ARQUIVOS_API_GLOBO\\'
 
 
+
+
+
+
 contador_tentativas = 0
 while contador_tentativas <= 3:
+
+    try:
+        config_arq = open('config.json')
+        config_json = json.loads(config_arq.readlines()[0])
+        config_arq.close
+    except FileNotFoundError:
+        print("Arquivo de configuração não encontrado!")
+        print("Aplicando valores padroes:")
+        DIAS = 1
+        TDLY = 120
+        print("Criando arquivo de configuracao padrao")
+        arq_config = open(path_api + 'config.json', 'w')
+        arq_config.write("{\"DIAS\": 1, \"TDLY\": 120 }\n")
+        arq_config.write("#Arquivo de configuracao do download_api_globo\n")
+        arq_config.write("#Parametro DIAS, quantidade de dias que deseja manter atualizado, 0 eh o mesmo dias, 1 eh o dia atual mais 1 (um) ...\n")
+        arq_config.write("#Parametro TDLY eh o tempo de delay para a nova verificação em segundos.\n")
+        arq_config.close
+
+
+
+    else:
+        # Atualizando Variaveis
+        DIAS = int(config_json['DIAS'])
+        TDLY = int(config_json['TDLY'])
+
+    print("Qauntidade de dias " + str(DIAS))
+    print("Tempo de delay " + str(TDLY))
 
     contador_tentativas =1
 
@@ -73,7 +105,7 @@ while contador_tentativas <= 3:
     #TODO: apagar o arquivo para nova lista ser gerada
 
     data_de = datetime.datetime.strptime(str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month) + '-' + str(datetime.datetime.now().day), "%Y-%m-%d")
-    novo_data_de = data_de - dateutil.relativedelta.relativedelta(days=1)
+    novo_data_de = data_de - dateutil.relativedelta.relativedelta(days=DIAS)
     data = str(novo_data_de.year) + "-" + str(novo_data_de.month) + "-" + str(novo_data_de.day)
 
     #TODO:VERIFICAR MATERIAL DA CASA VATICANO, O QUE FALTA PARA COMPLETAR O ENDERECO, POIS NÃO FAZ DOWNLOAD
@@ -238,6 +270,6 @@ while contador_tentativas <= 3:
             arquivo_log.close()
 
 
-    time.sleep(120)
+    time.sleep(TDLY)#tempo de espera para a proxima verificacao
 
 
