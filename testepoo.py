@@ -151,7 +151,7 @@ while contador_tentativas <= 3:
             try:
 
                 # Iniciar download alternativo
-                print('\n DOWNLOAD ALTERNATIVO DO ARQUIVO ' + nomeMaterial)
+                print('\nDOWNLOAD ALTERNATIVO DO ARQUIVO ' + nomeMaterial)
                 print(url)
                 baixar_arquivo_alternativo(url,path + nomeMaterial)
                 #Insere na lista de donwloads ok
@@ -171,7 +171,7 @@ while contador_tentativas <= 3:
 
             except:
 
-                print('\n FALHA NO DOWNLOAD ALTERNATIVO DO ARQUIVO ' + nomeMaterial)
+                print('\nFALHA NO DOWNLOAD ALTERNATIVO DO ARQUIVO ' + nomeMaterial)
                 #Insere na lista de arquivos com problema no download
                 arquivo_donwload = open(path_api + 'listadownload_bad.txt','a+')
                 arquivo_donwload.write(str(material['codMaterial'])+ '\n')
@@ -190,7 +190,7 @@ while contador_tentativas <= 3:
         else:
             #Bloco de download padrao
             try:
-                print('Baixando ' + nomeMaterial)
+                print('\nDOWNLOAD DO ARQUIVO ' + nomeMaterial)
                 print(url)
                 wget.download(url, path + nomeMaterial)
 
@@ -211,7 +211,7 @@ while contador_tentativas <= 3:
                 arquivo_log.close()
 
             except:
-                print('\n FALHA NO DOWNLOAD ARQUIVO ' + nomeMaterial)
+                print('\nFALHA NO DOWNLOAD ARQUIVO ' + nomeMaterial)
 
                 #Insere na lista de arquivos com problema no download
                 arquivo_donwload = open(path_api + 'listadownload_bad.txt','a+')
@@ -239,7 +239,7 @@ while contador_tentativas <= 3:
             md5_final = ''
 
         if md5_original == md5_final:
-            print('\n ARQUIVO INTEGRO')
+            print('\nARQUIVO INTEGRO')
             print(md5_final)
             # inserir dados no log
             arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
@@ -252,7 +252,7 @@ while contador_tentativas <= 3:
             arquivo_log.write(str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' VERIFICADO MD5 DO ARQUIVO ' + nomeMaterial + ' MD5 ORIGINAL ' + md5_original + ' MD5 VERIFICADO ' + md5_final + '\n')
             arquivo_log.close()
         else:
-            print('\n ARQUIVO COM PROBLEMA')
+            print('\nARQUIVO COM PROBLEMA')
             # inserir dados no log
             arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
             data_log = datetime.datetime.strptime(
