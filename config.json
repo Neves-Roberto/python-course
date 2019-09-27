@@ -1,4 +1,4 @@
-{"DIAS": 1, "TDLY": 120 }
+{"DIAS": 3, "TDLY": 120 }
 #Arquivo de configuracao do download_api_globo
 #Parametro DIAS, quantidade de dias que deseja manter atualizado, 0 eh o mesmo dias, 1 eh o dia atual mais 1 (um) ...
 #Parametro TDLY eh o tempo de delay para a nova verificação em segundos.
