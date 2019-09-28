@@ -304,8 +304,10 @@ while contador_tentativas <= 3:
             arquivo_log.close()
 
             try:
-                mensagem = 'DOWNLOAD CONCLUIDO\n' + mensagem
-                message = MIMEText(mensagem)
+                #Inserir dados do email
+                msg_str = str(data_log) + '\n CODIGO ' + str(material['codMaterial']) + '\n VERIFICADO MD5 DO ARQUIVO ' + nomeMaterial + '\n MD5 ORIGINAL ' + md5_original + '\n MD5 VERIFICADO ' + md5_final + str(material['player']) + '\n'
+                msg = 'DOWNLOAD CONCLUIDO\n' + msg_str
+                message = MIMEText(msg)
                 message['subject'] = 'DOWNLOAD CONCLUIDO ' + nomeMaterial  # assunto
                 message['from'] = from_addr
                 message['to'] = ', '.join(to_addrs)
