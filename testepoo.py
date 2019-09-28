@@ -305,7 +305,7 @@ while contador_tentativas <= 3:
 
             try:
                 #Inserir dados do email
-                msg_str = str(data_log) + '\n CODIGO ' + str(material['codMaterial']) + '\n VERIFICADO MD5 DO ARQUIVO ' + nomeMaterial + '\n MD5 ORIGINAL ' + md5_original + '\n MD5 VERIFICADO ' + md5_final + str(material['player']) + '\n'
+                msg_str = str(data_log) + '\n CODIGO ' + str(material['codMaterial']) + '\n VERIFICADO MD5 DO ARQUIVO ' + nomeMaterial + '\n MD5 ORIGINAL ' + md5_original + '\n MD5 VERIFICADO ' + md5_final + '\n PLAYER ' + str(material['player']) + '\n'
                 msg = 'DOWNLOAD CONCLUIDO\n' + msg_str
                 message = MIMEText(msg)
                 message['subject'] = 'DOWNLOAD CONCLUIDO ' + nomeMaterial  # assunto
@@ -331,13 +331,15 @@ while contador_tentativas <= 3:
                     datetime.datetime.now().minute) + '-' + str(datetime.datetime.now().second),
                 "%d-%m-%Y-%H-%M-%S")
             mensagem = str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' DIVERGENCIA MD5 DO ARQUIVO ' + nomeMaterial + ' MD5 ORIGINAL ' + md5_original + ' MD5 VERIFICADO ' + md5_final + '\n'
+            arquivo_log.write(mensagem)
 
             try:
 
 
-                arquivo_log.write(mensagem)
+
+                msg_str = str(data_log) + '\n CODIGO ' + str(material['codMaterial']) + '\n DIVERGENCIA MD5 DO ARQUIVO ' + nomeMaterial + '\n MD5 ORIGINAL ' + md5_original + '\n MD5 VERIFICADO ' + md5_final + '\n PLAYER ' + str(material['player']) + '\n'
                 #conteudo da mensagem de email
-                message = MIMEText(mensagem)
+                message = MIMEText(msg_str)
                 message['subject'] = 'DIVERGENCIA DE NO ARQUIVO ' + nomeMaterial#assunto
                 message['from'] = from_addr
                 message['to'] = ', '.join(to_addrs)
@@ -360,7 +362,8 @@ while contador_tentativas <= 3:
                 try:
 
                     # conteudo da mensagem de email
-                    message = MIMEText(mensagem)
+                    msg_str = str(data_log) + '\n CODIGO ' + str(material['codMaterial']) + '\n DELETANDO O ARQUIVO ' + nomeMaterial + '\n PLAYER ' + str(material['player']) + '\n'
+                    message = MIMEText(msg_str)
                     message['subject'] = 'DELETANDO O ARQUIVO ' + nomeMaterial  # assunto
                     message['from'] = from_addr
                     message['to'] = ', '.join(to_addrs)
