@@ -60,10 +60,10 @@ def baixar_arquivo_alternativo(url, endereco):
     else:
         resposta.raise_for_status()
 
-#path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\mxf\\'
+path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\mxf\\'
 #path = 'Y:\\SISCOM\\'
-path = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\SISCOM\\'
-path_api = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\ARQUIVOS_API_GLOBO\\'
+#path = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\SISCOM\\'
+path_api = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\'
 
 try:
 

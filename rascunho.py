@@ -6,6 +6,7 @@ import hashlib
 import requests
 import subprocess
 import os,re
+import json
 dict = {'idMaterial': 337773, 'idMaterialParceiro': '1213654', 'ptoVenda': 'PES', 'codMaterial': 254057, 'cliente': 'TRE', 'idPlayer': 4, 'player': 'ZARPA', 'dataEnvio': '2019-03-29', 'primeiraVeiculacao': '24/09/2019 FATI', 'titulo': 'BIOMETRIA N1 - SP', 'duracao': 30, 'statusDownload': 'emAndamento', 'exibidoras': ['SAN'], 'nomeArquivo': '254057_BIOMETRIA N1 - SP.MXF', 'tamArquivo': 281.11142, 'md5': '1b47958bc24ab4e773df954e5dcf8c27'}
 '''
 print(dict['idMaterial'])
@@ -105,6 +106,7 @@ def lista_arquivos(diretorio,extensao):
 
 print(lista_arquivos(path,extensao))"""
 
+"""
 print("{\"DIAS\": 1, \"TDLY\": 120 }\n")
 
 import smtplib
@@ -136,3 +138,90 @@ server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
 server.login(username, password)
 server.sendmail(from_addr, to_addrs, message.as_string())
 server.quit()
+"""
+
+#path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\mxf\\'
+path = 'Y:\\SISCOM\\'
+path_api = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\'
+
+
+'''
+try:
+    config_arq = open(path_api + 'config.json', 'r+')
+    config_json = json.loads(config_arq.readlines()[0])
+    config_arq.close
+    print(config_json)
+except FileNotFoundError:
+    print("Arquivo de configuração não encontrado!")
+    print("Aplicando valores padroes:")
+    DIAS = 0
+    TDLY = 120
+    print("Criando arquivo de configuracao padrao")
+    arq_config = open(path_api + 'config.json', 'w')
+    arq_config.write("{\"DIAS\": 0, \"TDLY\": 120 }\n")
+    arq_config.write("#Arquivo de configuracao do download_api_globo\n")
+    arq_config.write("#Parametro DIAS, quantidade de dias que deseja manter atualizado, 0 eh o mesmo dias, 1 eh o dia atual mais 1 (um) ...\n")
+    arq_config.write("#Parametro TDLY eh o tempo de delay para a nova verificação em segundos.\n")
+    arq_config.close
+except IndexError:
+    print('fora do indice')
+    DIAS = 0
+    TDLY = 120
+'''
+
+def lista_arquivos(diretorio,extensao='mxf'):
+    pattern = '^\d+'
+    pasta = diretorio# diretorio onde localiza os arquivos .extensao
+    caminhos = [os.path.join(pasta, nome) for nome in os.listdir(pasta)]
+    arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
+    lista_arquivos_extensao = [re.findall(pattern,arq.replace(path,''))[0] for arq in arquivos if arq.lower().endswith(extensao.lower())]  # lista com todos os arquivos .extensao no diretorio
+    return lista_arquivos_extensao
+
+#data = '2019-09-27'
+lista_arquivos_diretorio =lista_arquivos(path)
+print(lista_arquivos_diretorio)
+tamanho = len(lista_arquivos_diretorio)
+print('tamanho da lista ' + str(tamanho))
+
+a = 0
+b = 9
+print(a,b)
+while (a <= tamanho) or (b <= tamanho):
+
+    lista_material_opec = opec.GetMateriais(cdMateriais=lista_arquivos_diretorio[a:b])
+    dicionario_codigoMat_Md5 = {}
+    contador = 0
+    for material in lista_material_opec:
+        dicionario_codigoMat_Md5.update({lista_arquivos_diretorio[contador]:material['md5']})
+        contador += 1
+        nomeMaterial = material['nomeArquivo']#.replace(' ', '_')
+        try:
+
+            arquivo = open(path + nomeMaterial, 'rb').read()
+            md5_arquivo = hashlib.md5(arquivo)
+            md5_final = md5_arquivo.hexdigest()
+            if str(md5_final) == str(material['md5']):
+                print('CONFERE  ' + nomeMaterial)
+            else:
+                print('DIVERGENTE ---------------' + nomeMaterial)
+        except FileNotFoundError:
+            print("Procurar alternativa ")
+            try:
+                nomeMaterial = material['nomeArquivo'].replace(' ', '_')
+                arquivo = open(path + nomeMaterial, 'rb').read()
+                md5_arquivo = hashlib.md5(arquivo)
+                md5_final = md5_arquivo.hexdigest()
+                if str(md5_final) == str(material['md5']):
+                    print('CONFERE  ' + nomeMaterial)
+                else:
+                    print('DIVERGENTE ---------------' + nomeMaterial)
+            except:
+                print("Nao foi possivel")
+
+    a += 10
+    b += 10
+    print(a,b)
+
+#print(dicionario_codigoMat_Md5)
+
+
