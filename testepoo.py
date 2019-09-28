@@ -65,15 +65,22 @@ def baixar_arquivo_alternativo(url, endereco):
 path = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\SISCOM\\'
 path_api = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\ARQUIVOS_API_GLOBO\\'
 
-mensagem = 'Iniciado o download_api_globo'
-message = MIMEText(mensagem)
-message['subject'] = 'START DOWNLOAD_API_GLOBO' # assunto
-message['from'] = from_addr
-message['to'] = ', '.join(to_addrs)
-server.login(username, password)
-server.sendmail(from_addr, to_addrs, message.as_string())
-server.quit()
+try:
 
+    mensagem = 'Iniciado o download_api_globo'
+    message = MIMEText(mensagem)
+    message['subject'] = 'START DOWNLOAD_API_GLOBO' # assunto
+    message['from'] = from_addr
+    message['to'] = ', '.join(to_addrs)
+    server.login(username, password)
+    server.sendmail(from_addr, to_addrs, message.as_string())
+    server.quit()
+except:
+    print('Nao foi possivel enviar o email de inicio')
+    arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+    mensagem = 'Nao foi possivel enviar o email de inicio\n'
+    arquivo_log.write(mensagem)
+    arquivo_log.close()
 
 
 
@@ -296,15 +303,22 @@ while contador_tentativas <= 3:
             arquivo_log.write(mensagem)
             arquivo_log.close()
 
-            mensagem = 'DOWNLOAD CONCLUIDO\n' + mensagem
-            message = MIMEText(mensagem)
-            message['subject'] = 'DOWNLOAD CONCLUIDO ' + nomeMaterial  # assunto
-            message['from'] = from_addr
-            message['to'] = ', '.join(to_addrs)
-            server.connect(smtp_ssl_host,smtp_ssl_port)
-            server.login(username, password)
-            server.sendmail(from_addr, to_addrs, message.as_string())
-            server.quit()
+            try:
+                mensagem = 'DOWNLOAD CONCLUIDO\n' + mensagem
+                message = MIMEText(mensagem)
+                message['subject'] = 'DOWNLOAD CONCLUIDO ' + nomeMaterial  # assunto
+                message['from'] = from_addr
+                message['to'] = ', '.join(to_addrs)
+                server.connect(smtp_ssl_host,smtp_ssl_port)
+                server.login(username, password)
+                server.sendmail(from_addr, to_addrs, message.as_string())
+                server.quit()
+            except:
+                print('Nao foi possivel enviar email de download concluido')
+                arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+                mensagem = 'Nao foi possivel enviar email de download concluido\n'
+                arquivo_log.write(mensagem)
+                arquivo_log.close()
         else:
             print('\nARQUIVO COM PROBLEMA')
             # inserir dados no log
@@ -316,29 +330,49 @@ while contador_tentativas <= 3:
                 "%d-%m-%Y-%H-%M-%S")
             mensagem = str(data_log) + ' CODIGO ' + str(material['codMaterial']) + ' DIVERGENCIA MD5 DO ARQUIVO ' + nomeMaterial + ' MD5 ORIGINAL ' + md5_original + ' MD5 VERIFICADO ' + md5_final + '\n'
 
-            arquivo_log.write(mensagem)
-            #conteudo da mensagem de email
-            message = MIMEText(mensagem)
-            message['subject'] = 'DIVERGENCIA DE NO ARQUIVO ' + nomeMaterial#assunto
-            message['from'] = from_addr
-            message['to'] = ', '.join(to_addrs)
-            server.connect(smtp_ssl_host, smtp_ssl_port)
-            server.login(username, password)
-            server.sendmail(from_addr, to_addrs, message.as_string())
-            server.quit()
             try:
-                os.remove(path + nomeMaterial)
-                mensagem = 'DELETANDO O ARQUIVO ' + nomeMaterial + ' ' + str(material['codMaterial']) + '\n'
+
+
                 arquivo_log.write(mensagem)
-                # conteudo da mensagem de email
+                #conteudo da mensagem de email
                 message = MIMEText(mensagem)
-                message['subject'] = 'DELETANDO O ARQUIVO ' + nomeMaterial  # assunto
+                message['subject'] = 'DIVERGENCIA DE NO ARQUIVO ' + nomeMaterial#assunto
                 message['from'] = from_addr
                 message['to'] = ', '.join(to_addrs)
                 server.connect(smtp_ssl_host, smtp_ssl_port)
                 server.login(username, password)
                 server.sendmail(from_addr, to_addrs, message.as_string())
                 server.quit()
+            except:
+                print('Nao foi possivel enviar email de divergencia de arqvuivos')
+                arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+                mensagem = 'Nao foi possivel enviar email de divergencia de arqvuivos\n'
+                arquivo_log.write(mensagem)
+                arquivo_log.close()
+
+            try:
+                os.remove(path + nomeMaterial)
+                mensagem = 'DELETANDO O ARQUIVO ' + nomeMaterial + ' ' + str(material['codMaterial']) + '\n'
+                arquivo_log.write(mensagem)
+
+                try:
+
+                    # conteudo da mensagem de email
+                    message = MIMEText(mensagem)
+                    message['subject'] = 'DELETANDO O ARQUIVO ' + nomeMaterial  # assunto
+                    message['from'] = from_addr
+                    message['to'] = ', '.join(to_addrs)
+                    server.connect(smtp_ssl_host, smtp_ssl_port)
+                    server.login(username, password)
+                    server.sendmail(from_addr, to_addrs, message.as_string())
+                    server.quit()
+                except:
+                    print('Nao foi possivel enviar email de deletar arqvuivos')
+                    arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+                    mensagem = 'Nao foi possivel enviar email de deletar arqvuivos\n'
+                    arquivo_log.write(mensagem)
+                    arquivo_log.close()
+
             except:
                 arquivo_log.write('NAO FOI POSSIVEL DELETAR O ARQUIVO ' + nomeMaterial + ' ' + str(material['codMaterial']) + '\n')
 
