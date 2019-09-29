@@ -170,23 +170,104 @@ except IndexError:
 '''
 
 def lista_arquivos(diretorio,extensao='mxf'):
-    pattern = '^\d+'
+    #pattern = '.*\(\d\).*'
+    pattern = '.*'
     pasta = diretorio# diretorio onde localiza os arquivos .extensao
     caminhos = [os.path.join(pasta, nome) for nome in os.listdir(pasta)]
     arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
-    lista_arquivos_extensao = [re.findall(pattern,arq.replace(path,''))[0] for arq in arquivos if arq.lower().endswith(extensao.lower())]  # lista com todos os arquivos .extensao no diretorio
+    lista_arquivos_extensao = [re.findall(pattern,arq) for arq in arquivos if arq.lower().endswith(extensao.lower())]  # lista com todos os arquivos .extensao no diretorio
     return lista_arquivos_extensao
 
+"""
+def lista_arquivos(diretorio,extensao='mxf'):
+    pasta = diretorio# diretorio onde localiza os arquivos .extensao
+    caminhos = [os.path.join(pasta, nome) for nome in os.listdir(pasta)]
+    arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
+    lista_arquivos_extensao = [arq for arq in arquivos if arq.lower().endswith(extensao.lower())]  # lista com todos os arquivos .extensao no diretorio
+    return lista_arquivos_extensao
+"""
+'''
 #data = '2019-09-27'
 lista_arquivos_diretorio =lista_arquivos(path)
 print(lista_arquivos_diretorio)
 tamanho = len(lista_arquivos_diretorio)
 print('tamanho da lista ' + str(tamanho))
+for lista in lista_arquivos_diretorio:
+    if lista:
+        print(lista[0])
+        os.remove(lista[0])
+        print('removendo ...')
+'''
 
-a = 0
-b = 9
+'''
+from pathlib import Path
+
+data_criacao = lambda f: f.stat().st_ctime
+data_modificacao = lambda f: f.stat().st_mtime
+
+directory = Path(path)
+files = directory.glob('*.mxf')
+sorted_files = sorted(files, key=data_criacao, reverse=True)
+
+print(data_modificacao)
+#for f in sorted_files:
+#    print(f)
+'''
+
+import os
+import time
+
+DIAS = 100 # arqvuivos com mais de X dias serao deletados
+
+data_de = datetime.datetime.strptime(str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month) + '-' + str(datetime.datetime.now().day), "%Y-%m-%d")
+novo_data_de = data_de - dateutil.relativedelta.relativedelta(days=DIAS)
+data = str(novo_data_de.year) + "-" + str(novo_data_de.month) + "-" + str(novo_data_de.day)
+print(data)
+#s = "2019-06-07"
+s = data
+timestamp = time.mktime(datetime.datetime.strptime(s, "%Y-%m-%d").timetuple())
+print(timestamp)
+contador = 0
+for arquivo in lista_arquivos(path):
+
+    if arquivo:
+
+        #print(arquivo[0])
+
+        #nome_arquivo = raw_input('digite o nome do arquivo: ')
+        Seconds = os.path.getctime(arquivo[0])
+        if Seconds <= timestamp:
+            print('O arquivo foi criado em %s' %time.ctime(Seconds))
+            contador += 1
+print(contador)
+'''
+arquivo = 'Y:\\SISCOM\\183540_ARRIZO5_INSTITUCIONAL_0105.mxf'
+
+print(os.path.getsize(arquivo))
+print(time.ctime(os.path.getatime(arquivo)))
+print(os.path.getctime(arquivo))
+print(os.path.getmtime(arquivo))
+
+
+
+import time
+import datetime
+#s = "01/12/2011"
+s = "2019/09/29 00:00:00"
+print(time.mktime(datetime.datetime.strptime(s, "%Y/%m/%d %H:%M:%S").timetuple()))
+s = "2019/09/25 00:00:00"
+print(time.mktime(datetime.datetime.strptime(s, "%Y/%m/%d %H:%M:%S").timetuple()))
+'''
+#TODO: LISTAR TODOS OS ARQUVIVOS QUE TENHAM DATA MENOR QUE A DATA CITADA
+
+
+
+'''
+a = 900
+b = 910
 print(a,b)
 while (a <= tamanho) or (b <= tamanho):
+
 
     lista_material_opec = opec.GetMateriais(cdMateriais=lista_arquivos_diretorio[a:b])
     dicionario_codigoMat_Md5 = {}
@@ -195,6 +276,7 @@ while (a <= tamanho) or (b <= tamanho):
         dicionario_codigoMat_Md5.update({lista_arquivos_diretorio[contador]:material['md5']})
         contador += 1
         nomeMaterial = material['nomeArquivo']#.replace(' ', '_')
+        print(nomeMaterial)
         try:
 
             arquivo = open(path + nomeMaterial, 'rb').read()
@@ -204,6 +286,9 @@ while (a <= tamanho) or (b <= tamanho):
                 print('CONFERE  ' + nomeMaterial)
             else:
                 print('DIVERGENTE ---------------' + nomeMaterial)
+                arq_config = open(path_api + 'divergencia.txt', 'a+')
+                arq_config.write(nomeMaterial)
+                arq_config.close
         except FileNotFoundError:
             print("Procurar alternativa ")
             try:
@@ -212,16 +297,23 @@ while (a <= tamanho) or (b <= tamanho):
                 md5_arquivo = hashlib.md5(arquivo)
                 md5_final = md5_arquivo.hexdigest()
                 if str(md5_final) == str(material['md5']):
-                    print('CONFERE  ' + nomeMaterial)
+                    print('CONFERE ALTERNATIVA ' + nomeMaterial)
                 else:
-                    print('DIVERGENTE ---------------' + nomeMaterial)
+                    print('DIVERGENTE ALTERNATIVA---------------' + nomeMaterial)
+                    arq_config = open(path_api + 'divergencia.txt', 'a+')
+                    arq_config.write(nomeMaterial)
+                    arq_config.close
             except:
                 print("Nao foi possivel")
+                
+
+
+
 
     a += 10
     b += 10
     print(a,b)
 
 #print(dicionario_codigoMat_Md5)
-
+'''
 
