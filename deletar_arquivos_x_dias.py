@@ -2,7 +2,7 @@ import os,re
 import time
 import datetime
 import dateutil.relativedelta
-
+import MediaInfo
 
 def lista_arquivos(diretorio,extensao='mxf'):
 

@@ -6,7 +6,9 @@ import hashlib
 import requests
 import subprocess
 import os,re
+import subprocess
 import json
+from MediaInfo import MediaInfo
 dict = {'idMaterial': 337773, 'idMaterialParceiro': '1213654', 'ptoVenda': 'PES', 'codMaterial': 254057, 'cliente': 'TRE', 'idPlayer': 4, 'player': 'ZARPA', 'dataEnvio': '2019-03-29', 'primeiraVeiculacao': '24/09/2019 FATI', 'titulo': 'BIOMETRIA N1 - SP', 'duracao': 30, 'statusDownload': 'emAndamento', 'exibidoras': ['SAN'], 'nomeArquivo': '254057_BIOMETRIA N1 - SP.MXF', 'tamArquivo': 281.11142, 'md5': '1b47958bc24ab4e773df954e5dcf8c27'}
 '''
 print(dict['idMaterial'])
@@ -213,7 +215,7 @@ print(data_modificacao)
 #for f in sorted_files:
 #    print(f)
 '''
-
+"""
 import os
 import time
 
@@ -240,16 +242,20 @@ for arquivo in lista_arquivos(path):
             print('O arquivo foi criado em %s' %time.ctime(Seconds))
             contador += 1
 print(contador)
-'''
+"""
+
+
 arquivo = 'Y:\\SISCOM\\183540_ARRIZO5_INSTITUCIONAL_0105.mxf'
 
 print(os.path.getsize(arquivo))
-print(time.ctime(os.path.getatime(arquivo)))
+#print(time.ctime(os.path.getatime(arquivo)))
 print(os.path.getctime(arquivo))
 print(os.path.getmtime(arquivo))
+nomeArquivo = arquivo.replace('Y:\\SISCOM\\','').replace('.mxf','')
+print(subprocess.call("C:\\Users\\projetos\\Downloads\\MediaInfo_CLI_19.09_Windows_i386\\MediaInfo {0} --Output=JSON --LogFile={1}.json".format(arquivo,nomeArquivo),shell=False))
 
-
-
+print()
+"""
 import time
 import datetime
 #s = "01/12/2011"
@@ -313,7 +319,5 @@ while (a <= tamanho) or (b <= tamanho):
     a += 10
     b += 10
     print(a,b)
-
+"""
 #print(dicionario_codigoMat_Md5)
-'''
-
