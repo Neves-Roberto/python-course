@@ -1,11 +1,6 @@
-
-import os,re
-import subprocess
-
-
+import json,os,re
 
 def lista_arquivos(diretorio,extensao='mxf'):
-    #pattern = '.*\(\d\).*'
     pattern = '.*'
     pasta = diretorio# diretorio onde localiza os arquivos .extensao
     caminhos = [os.path.join(pasta, nome) for nome in os.listdir(pasta)]
@@ -13,14 +8,26 @@ def lista_arquivos(diretorio,extensao='mxf'):
     lista_arquivos_extensao = [re.findall(pattern,arq) for arq in arquivos if arq.lower().endswith(extensao.lower())]  # lista com todos os arquivos .extensao no diretorio
     return lista_arquivos_extensao
 
-#path = 'Y:\\SISCOM\\'
-path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\AMOSTRA_PCM_BIG_LITTLE\\'
-#path = 'C:\\Users\\projetos\\Downloads\\MediaInfo_CLI_19.09_Windows_i386\\'
+
+
+def temCloseCaption(arquivo_json):
+    with open(arquivo_json) as file_data:
+        data = file_data.readlines()
+
+    arquivo_json = ''
+    for item in (data):
+        arquivo_json += item
+    extraido_json = json.loads(arquivo_json)
+    temcc = False
+
+    for item in range(len(extraido_json['media']['track'])):
+        if extraido_json['media']['track'][item]['@type'] == 'Text':
+            temcc = True
+    return temcc
+
 #path_api = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\arquivos_json\\'
 path_api = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\AMOSTRA_PCM_BIG_LITTLE\\'
 
-for arquivo in lista_arquivos(path):
-    nomeArquivo = arquivo[0].replace(path, '').replace('.mxf', '')
-    string = "\""+ arquivo[0]+"\""
-    print(string)
-    subprocess.call("C:\\Users\\projetos\\Downloads\\MediaInfo_CLI_19.09_Windows_i386\\MediaInfo {0} --Output=JSON --LogFile={1}.json".format(string, path_api+nomeArquivo.replace(' ','_')), shell=False)
+print(lista_arquivos(path_api,'json'))
+for arquivos in lista_arquivos(path_api,'json'):
+    print(arquivos[0].replace(path_api,'') + ' Possui CC ? ' + str(temCloseCaption(arquivos[0])))

@@ -144,7 +144,7 @@ server.quit()
 
 #path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\mxf\\'
 path = 'Y:\\SISCOM\\'
-path_api = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\'
+path_api = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\arquivos_json\\'
 
 
 '''
@@ -169,7 +169,19 @@ except IndexError:
     print('fora do indice')
     DIAS = 0
     TDLY = 120
+    
+       
 '''
+
+def extrai_campos_importantes_arquivo_json(arquivo_json_diretorio):
+    # retorna lista contendo o que é importante
+    arquivo_json = open(arquivo_json_diretorio, 'rt')
+    print(arquivo_json)
+    dict_arquivo_json = json.loads(arquivo_json)
+    print(dict_arquivo_json)
+    arquivo_json.close()
+    return dict_arquivo_json
+#(teste['name'], ceil(teste['data']['temperature']), teste['data']['icon'],teste['data']['humidity'],teste['data']['condition'])
 
 def lista_arquivos(diretorio,extensao='mxf'):
     #pattern = '.*\(\d\).*'
@@ -179,6 +191,61 @@ def lista_arquivos(diretorio,extensao='mxf'):
     arquivos = [arq for arq in caminhos if os.path.isfile(arq)]
     lista_arquivos_extensao = [re.findall(pattern,arq) for arq in arquivos if arq.lower().endswith(extensao.lower())]  # lista com todos os arquivos .extensao no diretorio
     return lista_arquivos_extensao
+
+
+#print(lista_arquivos(path_api,'json'))
+
+#for arquivo in lista_arquivos(path_api,'json'):
+#    print(arquivo[0])
+#arquivo_json_diretorio = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\AMOSTRA_PCM_BIG_LITTLE\\CH_MC_MESTRE_AVILLEZ_DIA_10_B_SHARE.json'
+arquivo_json_diretorio = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\arquivos_json\\247631_METAMORPHOSIS_1_DE_5.MXF.json'
+
+
+with open(arquivo_json_diretorio) as file_data:
+    data = file_data.readlines()
+print(data)
+arquivo_json = ''
+for item in (data):
+    arquivo_json += item
+#print(arquivo_json)
+extraido_json = json.loads(arquivo_json)
+#print(extraido_json)
+print(extraido_json['media']['track'][1]['@type'])
+print((extraido_json['media']['track'])[2]['Format_Settings_Endianness'])
+print(len(extraido_json['media']['track']))
+
+for item in range(len(extraido_json['media']['track'])):
+    print(extraido_json['media']['track'][item]['@type'])
+
+#print(extraido_json['media']['track'])
+
+def temCloseCaption(arquivo_json):
+    with open(arquivo_json) as file_data:
+        data = file_data.readlines()
+
+    arquivo_json = ''
+    for item in (data):
+        arquivo_json += item
+    extraido_json = json.loads(arquivo_json)
+    temcc = False
+
+    for item in range(len(extraido_json['media']['track'])):
+        if extraido_json['media']['track'][item]['@type'] == 'Text':
+            temcc = True
+    return temcc
+
+print(temCloseCaption(arquivo_json_diretorio))
+
+'''
+arquivo_json = open(arquivo_json_diretorio, 'rt')
+print(arquivo_json)
+dict_arquivo_json = json.loads(arquivo_json.readlines())
+print(dict_arquivo_json)
+arquivo_json.close()
+#dict_arquivo_json
+'''
+
+
 
 """
 def lista_arquivos(diretorio,extensao='mxf'):
@@ -245,6 +312,9 @@ print(contador)
 """
 
 
+
+
+"""
 arquivo = 'Y:\\SISCOM\\183540_ARRIZO5_INSTITUCIONAL_0105.mxf'
 
 print(os.path.getsize(arquivo))
@@ -255,6 +325,10 @@ nomeArquivo = arquivo.replace('Y:\\SISCOM\\','').replace('.mxf','')
 print(subprocess.call("C:\\Users\\projetos\\Downloads\\MediaInfo_CLI_19.09_Windows_i386\\MediaInfo {0} --Output=JSON --LogFile={1}.json".format(arquivo,nomeArquivo),shell=False))
 
 print()
+
+"""
+
+
 """
 import time
 import datetime
@@ -320,4 +394,3 @@ while (a <= tamanho) or (b <= tamanho):
     b += 10
     print(a,b)
 """
-#print(dicionario_codigoMat_Md5)
