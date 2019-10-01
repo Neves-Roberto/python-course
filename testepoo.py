@@ -14,7 +14,7 @@ smtp_ssl_host = 'smtp.gmail.com'
 smtp_ssl_port = 465
 # username ou email para logar no servidor
 username = 'projetos.tvtribuna@gmail.com'
-password = ''#digitar a senha no servidor
+password = 'desptro01'#digitar a senha no servidor
 
 from_addr = 'projetos.tvtribuna@gmail.com'
 to_addrs = ['flavio.santos@tvtribuna.com','dkscript@gmail.com']#lista de emails
@@ -60,10 +60,11 @@ def baixar_arquivo_alternativo(url, endereco):
     else:
         resposta.raise_for_status()
 
-path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\mxf\\'
+#path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\mxf\\'
 #path = 'Y:\\SISCOM\\'
-#path = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\SISCOM\\'
-path_api = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\'
+path = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\SISCOM\\'
+path_api = 'C:\\Users\\dkscr\\PycharmProjects\\python-course\\'
+#path_api = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\'
 
 try:
 
@@ -72,6 +73,7 @@ try:
     message['subject'] = 'START DOWNLOAD_API_GLOBO' # assunto
     message['from'] = from_addr
     message['to'] = ', '.join(to_addrs)
+    server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
     server.login(username, password)
     server.sendmail(from_addr, to_addrs, message.as_string())
     server.quit()
@@ -83,10 +85,12 @@ except:
     arquivo_log.close()
 
 
-
+teste = True
 
 contador_tentativas = 0
 while contador_tentativas <= 3:
+    data_hoje_log = str(datetime.datetime.now().day)+'-'+str(datetime.datetime.now().month)+'-'+str(datetime.datetime.now().year)
+    print(data_hoje_log)
 
     try:
         config_arq = open('config.json')
@@ -210,7 +214,7 @@ while contador_tentativas <= 3:
                 arquivo_donwload.close()
 
                 # inserir dados no log
-                arquivo_log = open(path_api + 'log_download_api.txt','a')
+                arquivo_log = open(path_api + 'log_download_api_'+data_hoje_log+'.txt','a')
                 data_log = datetime.datetime.strptime(
                     str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
                         datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
@@ -227,7 +231,7 @@ while contador_tentativas <= 3:
                 arquivo_donwload.write(str(material['codMaterial'])+ '\n')
                 arquivo_donwload.close()
                 # inserir dados no log
-                arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+                arquivo_log = open(path_api + 'log_download_api_'+data_hoje_log+'.txt', 'a+')
                 data_log = datetime.datetime.strptime(
                     str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
                         datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
@@ -250,7 +254,7 @@ while contador_tentativas <= 3:
                 arquivo_donwload.close()
 
                 # inserir dados no log
-                arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+                arquivo_log = open(path_api + 'log_download_api_'+data_hoje_log+'.txt', 'a+')
                 data_log = datetime.datetime.strptime(
                     str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
                         datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
@@ -269,7 +273,7 @@ while contador_tentativas <= 3:
                 arquivo_donwload.close()
 
                 # inserir dados no log
-                arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+                arquivo_log = open(path_api + 'log_download_api_'+data_hoje_log+'.txt', 'a+')
                 data_log = datetime.datetime.strptime(
                     str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
                         datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
@@ -288,11 +292,13 @@ while contador_tentativas <= 3:
             print('Não foi possivel chevar a intergridade do arquivo ' + nomeMaterial)
             md5_final = ''
 
+
+
         if md5_original == md5_final:
             print('\nARQUIVO INTEGRO')
             print(md5_final)
             # inserir dados no log
-            arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+            arquivo_log = open(path_api + 'log_download_api_'+data_hoje_log+'.txt', 'a+')
             data_log = datetime.datetime.strptime(
                 str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
                     datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
@@ -311,20 +317,21 @@ while contador_tentativas <= 3:
                 message['subject'] = 'DOWNLOAD CONCLUIDO ' + nomeMaterial  # assunto
                 message['from'] = from_addr
                 message['to'] = ', '.join(to_addrs)
+                server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
                 server.connect(smtp_ssl_host,smtp_ssl_port)
                 server.login(username, password)
                 server.sendmail(from_addr, to_addrs, message.as_string())
                 server.quit()
             except:
                 print('Nao foi possivel enviar email de download concluido')
-                arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+                arquivo_log = open(path_api + 'log_download_api_'+data_hoje_log+'.txt', 'a+')
                 mensagem = 'Nao foi possivel enviar email de download concluido\n'
                 arquivo_log.write(mensagem)
                 arquivo_log.close()
         else:
             print('\nARQUIVO COM PROBLEMA')
             # inserir dados no log
-            arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+            arquivo_log = open(path_api + 'log_download_api_'+data_hoje_log+'.txt', 'a+')
             data_log = datetime.datetime.strptime(
                 str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
                     datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
@@ -343,13 +350,14 @@ while contador_tentativas <= 3:
                 message['subject'] = 'DIVERGENCIA DE NO ARQUIVO ' + nomeMaterial#assunto
                 message['from'] = from_addr
                 message['to'] = ', '.join(to_addrs)
+                server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
                 server.connect(smtp_ssl_host, smtp_ssl_port)
                 server.login(username, password)
                 server.sendmail(from_addr, to_addrs, message.as_string())
                 server.quit()
             except:
                 print('Nao foi possivel enviar email de divergencia de arqvuivos')
-                arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+                arquivo_log = open(path_api + 'log_download_api_'+data_hoje_log+'.txt', 'a+')
                 mensagem = 'Nao foi possivel enviar email de divergencia de arqvuivos\n'
                 arquivo_log.write(mensagem)
                 arquivo_log.close()
@@ -367,13 +375,14 @@ while contador_tentativas <= 3:
                     message['subject'] = 'DELETANDO O ARQUIVO ' + nomeMaterial  # assunto
                     message['from'] = from_addr
                     message['to'] = ', '.join(to_addrs)
+                    server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
                     server.connect(smtp_ssl_host, smtp_ssl_port)
                     server.login(username, password)
                     server.sendmail(from_addr, to_addrs, message.as_string())
                     server.quit()
                 except:
                     print('Nao foi possivel enviar email de deletar arqvuivos')
-                    arquivo_log = open(path_api + 'log_download_api.txt', 'a+')
+                    arquivo_log = open(path_api + 'log_download_api_'+data_hoje_log+'.txt', 'a+')
                     mensagem = 'Nao foi possivel enviar email de deletar arqvuivos\n'
                     arquivo_log.write(mensagem)
                     arquivo_log.close()
@@ -382,6 +391,8 @@ while contador_tentativas <= 3:
                 arquivo_log.write('NAO FOI POSSIVEL DELETAR O ARQUIVO ' + nomeMaterial + ' ' + str(material['codMaterial']) + '\n')
 
             arquivo_log.close()
+
+    print(TDLY)
 
 
     time.sleep(TDLY)#tempo de espera para a proxima verificacao

@@ -8,7 +8,7 @@ import subprocess
 import os,re
 import subprocess
 import json
-from MediaInfo import MediaInfo
+
 dict = {'idMaterial': 337773, 'idMaterialParceiro': '1213654', 'ptoVenda': 'PES', 'codMaterial': 254057, 'cliente': 'TRE', 'idPlayer': 4, 'player': 'ZARPA', 'dataEnvio': '2019-03-29', 'primeiraVeiculacao': '24/09/2019 FATI', 'titulo': 'BIOMETRIA N1 - SP', 'duracao': 30, 'statusDownload': 'emAndamento', 'exibidoras': ['SAN'], 'nomeArquivo': '254057_BIOMETRIA N1 - SP.MXF', 'tamArquivo': 281.11142, 'md5': '1b47958bc24ab4e773df954e5dcf8c27'}
 '''
 print(dict['idMaterial'])
@@ -172,7 +172,7 @@ except IndexError:
     
        
 '''
-
+'''
 def extrai_campos_importantes_arquivo_json(arquivo_json_diretorio):
     # retorna lista contendo o que é importante
     arquivo_json = open(arquivo_json_diretorio, 'rt')
@@ -235,7 +235,7 @@ def temCloseCaption(arquivo_json):
     return temcc
 
 print(temCloseCaption(arquivo_json_diretorio))
-
+'''
 '''
 arquivo_json = open(arquivo_json_diretorio, 'rt')
 print(arquivo_json)
@@ -394,3 +394,7 @@ while (a <= tamanho) or (b <= tamanho):
     b += 10
     print(a,b)
 """
+
+from datetime import datetime
+print(str(datetime.now().day)+'-'+str(datetime.now().month)+'-'+str(datetime.now().year))
+
