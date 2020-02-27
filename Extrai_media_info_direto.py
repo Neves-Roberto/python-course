@@ -28,8 +28,8 @@ def lista_arquivos(diretorio,extensao='mxf'):
     lista_arquivos_extensao = [re.findall(pattern,arq) for arq in arquivos if arq.lower().endswith(extensao.lower())]  # lista com todos os arquivos .extensao no diretorio
     return lista_arquivos_extensao
 
-#path = 'Y:\\SISCOM\\'
-path = 'Y:\\'
+path = 'Y:\\SISCOM\\'
+#path = 'Y:\\'
 #path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\AMOSTRA_PCM_BIG_LITTLE\\'
 #path = 'C:\\Users\\projetos\\Downloads\\MediaInfo_CLI_19.09_Windows_i386\\'
 #path_api = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\Comerciais_Api_globo\\arquivos_json\\'

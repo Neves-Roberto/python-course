@@ -6,8 +6,23 @@ import datetime
 import requests
 import time,os,re
 import json
+from json import load as carregar
 import smtplib
 from email.mime.text import MIMEText
+
+carregar(teste)
+
+def funcao():
+    pass
+
+class nome:
+    pass
+
+teste = nome()
+
+teste.
+
+
 
 # conexão com os servidores do google
 smtp_ssl_host = 'smtp.gmail.com'
@@ -166,23 +181,36 @@ while contador_tentativas <= 3:
 
 
     #obtendo lista atualizada do siscom
-    lista_material_opec = opec.GetMateriais(dataDe=[data],cdMateriais=[])
+    try:
 
-    #listando e comparando com lista existente
+        lista_material_opec = opec.GetMateriais(dataDe=[data],cdMateriais=[])
 
-    lista_nova_tentativa = []
-    print('conteudo da lista nova tentativa')
-    print(lista_nova_tentativa)
-    for material in lista_material_opec:
+        #listando e comparando com lista existente
 
-        if material['codMaterial'] in lista_ok:
-            print(str(material['codMaterial']) + " CODIGO DE MATERIAL JA EXISTE ")
-        else:
-            # adicionar na lista de nova tentativa de download
-            lista_nova_tentativa.append(material['codMaterial'])
-            print(str(material['codMaterial']) + " CODIGO DE MATERIAL NAO EXISTE - NOVA TENTATIVA ")
+        lista_nova_tentativa = []
+        print('conteudo da lista nova tentativa')
+        print(lista_nova_tentativa)
+        for material in lista_material_opec:
 
+            if material['codMaterial'] in lista_ok:
+                print(str(material['codMaterial']) + " CODIGO DE MATERIAL JA EXISTE ")
+            else:
+                # adicionar na lista de nova tentativa de download
+                lista_nova_tentativa.append(material['codMaterial'])
+                print(str(material['codMaterial']) + " CODIGO DE MATERIAL NAO EXISTE - NOVA TENTATIVA ")
+    except json.decoder.JSONDecodeError:
+        print('Erro de decode Json')
+        arquivo_log = open(path_api + 'log_download_api_' + data_hoje_log + '.txt', 'a')
+        data_log = datetime.datetime.strptime(
+            str(datetime.datetime.now().day) + '-' + str(datetime.datetime.now().month) + '-' + str(
+                datetime.datetime.now().year) + '-' + str(datetime.datetime.now().hour) + '-' + str(
+                datetime.datetime.now().minute) + '-' + str(datetime.datetime.now().second),
+            "%d-%m-%Y-%H-%M-%S")
+        arquivo_log.write(str(data_log) + ' ERRO DE DECODE JSON ' + nomeMaterial + '\n')
+        arquivo_log.close()
+        lista_nova_tentativa = []
 
+    time.sleep(TDLY)
 
     lista_material_opec = opec.GetMateriais(dataDe=[data],cdMateriais=[lista_nova_tentativa])
 

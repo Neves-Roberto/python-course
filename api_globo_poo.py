@@ -31,17 +31,22 @@ class apiGlobo:
 
     def GetToken(self,grant_type='password', username='entregadigital.api', password='Tri#01', client_id='downloadapp',
                  client_secret='downloadsecret', url_token="https://api.tvglobo.com.br/integradorgmid/oauth/token"):
+
         # Retorna o token valido e o type_token
         # solicitando token
-        dados_acesso = {'grant_type': grant_type, 'username': username, 'password': password, 'client_id': client_id,
+        try:
+            
+            dados_acesso = {'grant_type': grant_type, 'username': username, 'password': password, 'client_id': client_id,
                         'client_secret': client_secret}
-        request_token = requests.post(url_token, data=dados_acesso)
+            request_token = requests.post(url_token, data=dados_acesso)
 
-        # extraindo campos
-        campo_json = json.loads(request_token.text)
-        token = campo_json['access_token']
-        tipo_token = campo_json['token_type']
-        # returna uma lista
+            # extraindo campos
+            campo_json = json.loads(request_token.text)
+            token = campo_json['access_token']
+            tipo_token = campo_json['token_type']
+            # returna uma lista
+        except:
+            token, tipo_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzAxMDY3MDAsInVzZXJfbmFtZSI6ImVudHJlZ2FkaWdpdGFsLmFwaSIsInNjb3BlIjpbInJlYWQiLCJ0cnVzdCIsIndyaXRlIl0sImF1dGhvcml0aWVzIjpbIjYyMDMiLCI2MjE0Il0sImp0aSI6IjM2Mzk3NTY5LTc1MmEtNDQ3Ny1hNjM0LTc0YmIxNDk2M2FkNyIsImNsaWVudF9pZCI6ImRvd25sb2FkYXBwIn0.CxIul181lK6UQxhesemfH_yuAiM311GE7JsF0tH-WFs","bearer"
         return (token, tipo_token)
 
     def GetMateriais(self,destino='SAN', idPlayers='1,2,3,4', statusDownload='', dataDe=[], dataAte=[],
@@ -55,6 +60,8 @@ class apiGlobo:
         # inteiro
 
         token, tipo_token = self.GetToken()
+        print("token "+ token)
+        print("tipo_token "+ tipo_token)
 
         url_materiais = 'https://api.tvglobo.com.br/integradorgmid/api/rest/v3/materiais-cloud?'
         if cdMateriais == ['']:
@@ -74,9 +81,14 @@ class apiGlobo:
         #print('Codigo de material ')
         #print(cdMateriais)
 
-        request_materiais = requests.get(url=url_materiais, params=dados_materiais, headers=dados_headers)
-        #print(request_materiais.url)
-        materiais_json = json.loads(request_materiais.text)
+
+
+        try:
+            request_materiais = requests.get(url=url_materiais, params=dados_materiais, headers=dados_headers)
+            materiais_json = json.loads(request_materiais.text)
+        except:
+            materiais_json = []
+        
         # retorna um Json com a lista de materiais
         # TODO fazer verificação de resposta do retorno, se é 200 para liberar a resposta em json, caso contrario retornar -1
         return (materiais_json)

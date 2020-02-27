@@ -108,11 +108,16 @@ def lista_arquivos(diretorio,extensao):
 
 print(lista_arquivos(path,extensao))"""
 
-"""
+
 print("{\"DIAS\": 1, \"TDLY\": 120 }\n")
 
 import smtplib
+#from email.mime.text import MIMEText
+from os.path import basename
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
 
 # conexão com os servidores do google
 smtp_ssl_host = 'smtp.gmail.com'
@@ -128,10 +133,27 @@ to_addrs = ['flavio.santos@tvtribuna.com']
 # para diferentes formatos de mensagem
 # neste caso usaremos MIMEText para enviar
 # somente texto
-message = MIMEText('Hello World')
+message = MIMEMultipart()
 message['subject'] = 'Hello'
 message['from'] = from_addr
 message['to'] = ', '.join(to_addrs)
+# Anexa a imagem
+imgFilename = 'Ó o auê aí, ô.jpg' # Repare que é diferente do nome do arquivo local!
+with open('img.jpg', 'rb') as f:
+    msgImg = MIMEImage(f.read(), name=imgFilename)
+message.attach(msgImg)
+
+
+with open('log_download_api_4-10-2019.txt', 'r') as f:
+    msgImg = MIMEText(f.read(),_subtype='txt')
+    msgImg.add_header('content-disposition', 'attachment', filename='log.txt')
+message.attach(msgImg)
+
+"""
+# Anexa o corpo do texto
+msgText = MIMEText('<b>{}</b><br><img src="cid:{}"><br>'.format(body, imgFilename), 'html')
+message.attach(msgText)
+"""
 
 # conectaremos de forma segura usando SSL
 server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
@@ -140,7 +162,7 @@ server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
 server.login(username, password)
 server.sendmail(from_addr, to_addrs, message.as_string())
 server.quit()
-"""
+
 
 #path = 'C:\\Users\\projetos\\PycharmProjects\\python-course\\mxf\\'
 path = 'Y:\\SISCOM\\'
@@ -395,6 +417,43 @@ while (a <= tamanho) or (b <= tamanho):
     print(a,b)
 """
 
-from datetime import datetime
-print(str(datetime.now().day)+'-'+str(datetime.now().month)+'-'+str(datetime.now().year))
+"""
+config_arq = open(path_api + 'arq_config.json', 'r+')
+print(config_arq)
+config_json = json.loads(config_arq.readlines()[0])
+print(config_json)
+config_arq.close
+print(config_json)
+"""
 
+'''
+except FileNotFoundError:
+    print("Arquivo de configuração não encontrado!")
+    print("Aplicando valores padroes:")
+    DIAS = 60
+    TDLY = 120
+    print("Criando arquivo de configuracao padrao")
+    config_arq = open(path_api + 'arq_config.json', 'w+')
+    config_arq.write("{\"DIAS\": 60, \"TDLY\": 120 }\n")
+    config_arq.write("#Arquivo de configuracao do download_api_globo\n")
+    config_arq.write(
+        "#Parametro DIAS, quantidade de dias que deseja manter atualizado, 0 eh o mesmo dias, 1 eh o dia atual mais 1 (um) ...\n")
+    config_arq.write("#Parametro TDLY eh o tempo de delay para a nova verificação em segundos.\n")
+    config_arq.close
+
+
+except IndexError:
+    print('fora do indice')
+    DIAS = 60
+    TDLY = 120
+except json.decoder.JSONDecodeError:
+    DIAS = 60
+    TDLY = 120
+    print('erro de decode json')
+
+else:
+    # Atualizando Variaveis
+    DIAS = int(config_json['DIAS'])
+    TDLY = int(config_json['TDLY'])
+
+'''
